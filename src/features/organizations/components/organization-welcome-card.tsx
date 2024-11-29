@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CreateOrganizationButton } from "@/features/organizations/components/create-organization-button";
+import { CreateProjectButton } from "@/features/projects/components/create-project-button";
 
 export const OrganizationWelcomeCard = () => {
   return (
@@ -22,7 +22,7 @@ export const OrganizationWelcomeCard = () => {
       <CardContent className="space-y-8">
         <div className="space-y-4 md:flex md:gap-4 md:space-y-0">
           <CreateOrganizationButton />
-          <Button className="w-full">Create New Project</Button>
+          <CreateProjectButton />
         </div>
       </CardContent>
     </Card>

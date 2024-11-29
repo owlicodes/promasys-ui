@@ -1,6 +1,5 @@
 "use client";
 
-import { Route } from "next";
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,25 +20,21 @@ import { SubmitButton } from "@/features/common/components/submit-button";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
-import { useCreateOrganization } from "../apis/use-create-organization";
-import { useUpdateOrganization } from "../apis/use-update-organization";
 import {
-  TOrganization,
-  TOrganizationFormSchema,
-  organizationFormSchema,
-} from "../organization-schemas";
+  TProject,
+  TProjectSchema,
+  projectFormSchema,
+} from "../project-schemas";
 
-export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
-  const form = useForm<TOrganizationFormSchema>({
-    resolver: zodResolver(organizationFormSchema),
+export const ProjectForm = ({ data }: { data?: TProject }) => {
+  const form = useForm<TProjectSchema>({
+    resolver: zodResolver(projectFormSchema),
     defaultValues: {
       name: data?.name || "",
       description: data?.description || "",
     },
   });
   const session = useSession();
-  const createOrganization = useCreateOrganization(session.data?.user.id);
-  const updateOrganization = useUpdateOrganization(session.data?.user.id);
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
   const router = useRouter();
@@ -58,39 +53,41 @@ export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
     });
   };
 
-  const onSubmit = (values: TOrganizationFormSchema) => {
+  const onSubmit = (values: TProjectSchema) => {
+    console.log(values);
+
     if (session.data?.user) {
       if (!data) {
-        createOrganization.mutate(
-          {
-            ...values,
-            ownerId: session.data?.user.id,
-          },
-          {
-            onSuccess: () => {
-              showSuccess("Organization created.");
-              router.push(values.name as Route);
-            },
-            onError: (error) => showError(error.message),
-          }
-        );
+        // createOrganization.mutate(
+        //   {
+        //     ...values,
+        //     ownerId: session.data?.user.id,
+        //   },
+        //   {
+        //     onSuccess: () => {
+        //       showSuccess("Organization created.");
+        //       router.push(values.name as Route);
+        //     },
+        //     onError: (error) => showError(error.message),
+        //   }
+        // );
       } else {
-        updateOrganization.mutate(
-          {
-            organizationId: data.id,
-            data: {
-              ...values,
-              ownerId: data.ownerId,
-            },
-          },
-          {
-            onSuccess: () => {
-              showSuccess("Organization updated.");
-              router.push(values.name as Route);
-            },
-            onError: (error) => showError(error.message),
-          }
-        );
+        // updateOrganization.mutate(
+        //   {
+        //     organizationId: data.id,
+        //     data: {
+        //       ...values,
+        //       ownerId: data.ownerId,
+        //     },
+        //   },
+        //   {
+        //     onSuccess: () => {
+        //       showSuccess("Organization updated.");
+        //       router.push(values.name as Route);
+        //     },
+        //     onError: (error) => showError(error.message),
+        //   }
+        // );
       }
     }
   };
@@ -128,11 +125,7 @@ export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
             </FormItem>
           )}
         />
-        <SubmitButton
-          isPending={
-            createOrganization.isPending || updateOrganization.isPending
-          }
-        >
+        <SubmitButton isPending={false}>
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>

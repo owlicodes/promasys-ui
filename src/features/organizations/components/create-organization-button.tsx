@@ -12,8 +12,7 @@ export const CreateOrganizationButton = () => {
     setDialogConfig({
       open: true,
       title: "Create New Organization",
-      description:
-        "Note: Organizations are unique accross all users of promasys.",
+      description: "",
       content: <OrganizationForm />,
     });
 
