@@ -22,9 +22,14 @@ export type TCreateOrganization = Omit<
 export type TUpdateOrganization = TCreateOrganization;
 
 export const formSchema = z.object({
-  name: z.string().trim().min(1, {
-    message: "Name field is required.",
-  }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Organization name is required" })
+    .max(50, { message: "Organization name is too long" })
+    .regex(/^[a-zA-Z0-9\s-]+$/, {
+      message: "Name can only contain letters, numbers, spaces, and hyphens.",
+    }),
   description: z.string().min(1, {
     message: "Description field is required.",
   }),
