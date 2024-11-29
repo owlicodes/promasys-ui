@@ -1,5 +1,8 @@
 "use client";
 
+import { Route } from "next";
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -19,42 +22,73 @@ import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
 import { useCreateOrganization } from "../apis/use-create-organization";
-import { TFormSchema, formSchema } from "../organization-schemas";
+import { useUpdateOrganization } from "../apis/use-update-organization";
+import {
+  TFormSchema,
+  TOrganization,
+  formSchema,
+} from "../organization-schemas";
 
-export const OrganizationForm = () => {
+export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
   const form = useForm<TFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: data?.name || "",
+      description: data?.description || "",
     },
   });
   const session = useSession();
   const createOrganization = useCreateOrganization(session.data?.user.id);
+  const updateOrganization = useUpdateOrganization(session.data?.user.id);
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
+  const router = useRouter();
+
+  const showError = (message: string) =>
+    toast({
+      title: message,
+      variant: "destructive",
+    });
+
+  const showSuccess = (message: string) => {
+    setDialogConfig(undefined);
+
+    toast({
+      title: message,
+    });
+  };
 
   const onSubmit = (values: TFormSchema) => {
     if (session.data?.user) {
-      createOrganization.mutate(
-        {
-          ...values,
-          ownerId: session.data?.user.id,
-        },
-        {
-          onSuccess: () => {
-            setDialogConfig(undefined);
-            toast({
-              title: "Organization Created",
-            });
+      if (!data) {
+        createOrganization.mutate(
+          {
+            ...values,
+            ownerId: session.data?.user.id,
           },
-          onError: (error) =>
-            toast({
-              title: error.message,
-              variant: "destructive",
-            }),
-        }
-      );
+          {
+            onSuccess: () => showSuccess("Organization created."),
+            onError: (error) => showError(error.message),
+          }
+        );
+      } else {
+        updateOrganization.mutate(
+          {
+            organizationId: data.id,
+            data: {
+              ...values,
+              ownerId: data.ownerId,
+            },
+          },
+          {
+            onSuccess: () => {
+              showSuccess("Organization updated.");
+              router.push(values.name as Route);
+            },
+            onError: (error) => showError(error.message),
+          }
+        );
+      }
     }
   };
 
@@ -91,8 +125,12 @@ export const OrganizationForm = () => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={createOrganization.isPending}>
-          Create
+        <SubmitButton
+          isPending={
+            createOrganization.isPending || updateOrganization.isPending
+          }
+        >
+          {data ? "Update" : "Create"}
         </SubmitButton>
       </form>
     </Form>

@@ -19,6 +19,7 @@ export type TCreateOrganization = Omit<
   TOrganization,
   "id" | "createdAt" | "owner"
 >;
+export type TUpdateOrganization = TCreateOrganization;
 
 export const formSchema = z.object({
   name: z.string().trim().min(1, {
