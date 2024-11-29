@@ -2,28 +2,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/lib/api-client";
 
-import { TOrganization, TUpdateOrganization } from "../organization-schemas";
+import { TOrganization } from "../organization-schemas";
 import { organizationQueryKeys } from "./organization-query-keys";
 
-const updateOrganization = ({
-  organizationId,
-  data,
-}: {
-  organizationId: string;
-  data: TUpdateOrganization;
-}): Promise<TOrganization> =>
+const deleteOrganization = (organizationId: string): Promise<TOrganization> =>
   api
-    .patch(`/organizations/${organizationId}`, data)
+    .delete(`/organizations/${organizationId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw error.response.data;
     });
 
-export const useUpdateOrganization = (userId: string | undefined) => {
+export const useDeleteOrganization = (userId: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateOrganization,
+    mutationFn: deleteOrganization,
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: organizationQueryKeys.byUserId(userId),

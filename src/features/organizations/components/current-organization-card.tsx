@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { format } from "date-fns";
 import { CalendarDays, Edit, Mail, Trash2 } from "lucide-react";
@@ -8,9 +8,12 @@ import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DeleteContent } from "@/features/common/components/delete-content";
 import { Spinner } from "@/features/common/components/spinner";
+import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
+import { useDeleteOrganization } from "../apis/use-delete-organization";
 import { useOrganizations } from "../apis/use-organizations";
 import { getSelectedOrganization } from "../helpers";
 import { OrganizationForm } from "./organization-form";
@@ -24,6 +27,9 @@ export const CurrentOrganizationCard = () => {
     organizations.data
   );
   const { setDialogConfig } = useDialogConfigStore();
+  const deleteOrganization = useDeleteOrganization(session.data?.user.id);
+  const { toast } = useToast();
+  const router = useRouter();
 
   const showOrganizationForm = () =>
     setDialogConfig({
@@ -32,6 +38,38 @@ export const CurrentOrganizationCard = () => {
       description: "",
       content: <OrganizationForm data={selectedOrganization} />,
     });
+
+  const deleteCallback = () => {
+    if (selectedOrganization) {
+      deleteOrganization.mutate(selectedOrganization.id, {
+        onSuccess: () => {
+          toast({
+            title: "Organization deleted.",
+          });
+          router.push("/default");
+          setDialogConfig(undefined);
+        },
+        onError: (error) => {
+          toast({
+            title: error.message,
+            variant: "destructive",
+          });
+          setDialogConfig(undefined);
+        },
+      });
+    }
+  };
+
+  const showDeleteOrganizationConfirmation = () => {
+    if (selectedOrganization) {
+      setDialogConfig({
+        open: true,
+        title: "Delete Organization",
+        description: selectedOrganization.name,
+        content: <DeleteContent deleteCallback={deleteCallback} />,
+      });
+    }
+  };
 
   if (organizations.isLoading) {
     return <Spinner />;
@@ -52,7 +90,11 @@ export const CurrentOrganizationCard = () => {
           <Button variant="ghost" size="icon" onClick={showOrganizationForm}>
             <Edit />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={showDeleteOrganizationConfirmation}
+          >
             <Trash2 className="text-red-500" />
           </Button>
         </div>
