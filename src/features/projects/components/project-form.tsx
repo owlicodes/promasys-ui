@@ -1,8 +1,5 @@
 "use client";
 
-import { Route } from "next";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -40,7 +37,6 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
-  const router = useRouter();
   const createProject = useCreateProject(session.data?.user.id);
   const { selectedOrganization } = useSelectedOrganizationStore();
 
@@ -68,10 +64,7 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
             ownerId: session.data.user.id,
           },
           {
-            onSuccess: () => {
-              showSuccess("Project created.");
-              router.push(values.name as Route);
-            },
+            onSuccess: () => showSuccess("Project created."),
             onError: (error) => showError(error.message),
           }
         );
