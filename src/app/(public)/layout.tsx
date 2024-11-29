@@ -9,7 +9,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
       <BetaBanner />
       <Header />
 
-      <div className="flex min-h-[calc(100vh-60px)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-60px)] w-full items-center justify-center">
         {children}
       </div>
     </div>

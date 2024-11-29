@@ -5,7 +5,7 @@ import { InviteSection } from "@/features/public/components/invite-section";
 
 export default async function Home() {
   return (
-    <div>
+    <div className="w-full">
       <HeroSection />
       <FeaturesSection />
       <InviteSection />
