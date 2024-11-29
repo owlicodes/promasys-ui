@@ -67,7 +67,10 @@ export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
             ownerId: session.data?.user.id,
           },
           {
-            onSuccess: () => showSuccess("Organization created."),
+            onSuccess: () => {
+              showSuccess("Organization created.");
+              router.push(values.name as Route);
+            },
             onError: (error) => showError(error.message),
           }
         );
