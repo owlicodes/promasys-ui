@@ -18,7 +18,7 @@ export const SubmitButton = ({
       {isPending ? (
         <div className="flex items-center">
           <Loader className="mr-2 h-4 w-4 animate-spin" />
-          <span>Submit</span>
+          <span>Submitting...</span>
         </div>
       ) : (
         <>{children}</>
