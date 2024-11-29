@@ -1,5 +1,6 @@
 "use client";
 
+import { Route } from "next";
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +20,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/features/common/components/submit-button";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
+import { useCreateProject } from "../apis/use-create-project";
 import {
   TProject,
   TProjectSchema,
@@ -38,6 +41,8 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
   const router = useRouter();
+  const createProject = useCreateProject(session.data?.user.id);
+  const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
     toast({
@@ -54,23 +59,22 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
   };
 
   const onSubmit = (values: TProjectSchema) => {
-    console.log(values);
-
-    if (session.data?.user) {
+    if (session.data?.user && selectedOrganization) {
       if (!data) {
-        // createOrganization.mutate(
-        //   {
-        //     ...values,
-        //     ownerId: session.data?.user.id,
-        //   },
-        //   {
-        //     onSuccess: () => {
-        //       showSuccess("Organization created.");
-        //       router.push(values.name as Route);
-        //     },
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        createProject.mutate(
+          {
+            ...values,
+            organizationId: selectedOrganization.id,
+            ownerId: session.data.user.id,
+          },
+          {
+            onSuccess: () => {
+              showSuccess("Project created.");
+              router.push(values.name as Route);
+            },
+            onError: (error) => showError(error.message),
+          }
+        );
       } else {
         // updateOrganization.mutate(
         //   {
@@ -125,7 +129,7 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={false}>
+        <SubmitButton isPending={createProject.isPending}>
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>

@@ -2,6 +2,7 @@
 
 import { Route } from "next";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Check, ChevronsUpDown, GalleryVerticalEnd } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganizations } from "@/features/organizations/apis/use-organizations";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { getSelectedOrganization } from "../helpers";
 
@@ -31,6 +33,11 @@ export const OrganizationSwitcher = () => {
     organization,
     organizations.data
   );
+  const { setSelectedOrganization } = useSelectedOrganizationStore();
+
+  useEffect(() => {
+    setSelectedOrganization(selectedOrganization);
+  }, [setSelectedOrganization, selectedOrganization]);
 
   const onSwitchHandler = (name: string) => router.push(name as Route);
 
