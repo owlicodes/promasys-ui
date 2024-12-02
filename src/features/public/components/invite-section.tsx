@@ -18,11 +18,11 @@ export const InviteSection = async () => {
               Ready to Boost Your Productivity?
             </h2>
             <p className="mx-auto max-w-[600px] md:text-xl">
-              Join thousands of teams already using promasys to streamline their
-              project management.{" "}
+              Join thousands of teams already using proyektibo to streamline
+              their project management.{" "}
               <span className="italic">
                 Just kidding, I don&apos;t have thousands of users, but maybe
-                join me in using promasys
+                join me in using proyektibobo
               </span>
               .
             </p>

@@ -13,7 +13,7 @@ export const CreateOrganizationButton = () => {
       open: true,
       title: "Create New Organization",
       description:
-        "Note: Organizations are unique accross all users of promasys.",
+        "Note: Organizations are unique accross all users of proyektibo.",
       content: <OrganizationForm />,
     });
 
