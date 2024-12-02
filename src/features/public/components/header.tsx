@@ -8,7 +8,7 @@ export const Header = async () => {
 
   return (
     <header className="flex h-[60px] w-full items-center justify-between bg-white px-4 shadow-md">
-      <h1 className="text-xl font-bold text-brand">promasys</h1>
+      <h1 className="text-xl font-bold text-brand">proyektibo</h1>
 
       {!session?.user && (
         <GoogleSignInButton>Sign In with Google</GoogleSignInButton>

@@ -47,7 +47,7 @@ export const OrganizationSwitcher = () => {
                 <GalleryVerticalEnd className="size-4" />
               </div>
               <div className="flex w-full flex-col gap-0.5 leading-none">
-                <span className="mb-1 font-bold text-brand">promasys</span>
+                <span className="mb-1 font-bold text-brand">proyektibo</span>
                 {organizations.isLoading ? (
                   <Skeleton className="h-4 w-full" />
                 ) : (

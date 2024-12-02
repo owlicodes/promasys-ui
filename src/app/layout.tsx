@@ -8,7 +8,7 @@ import SessionProvider from "@/features/common/providers/session-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "promasys",
+  title: "proyektibo",
   description: "A project management system for indie hackers and small teams.",
 };
 

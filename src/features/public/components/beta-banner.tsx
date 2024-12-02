@@ -19,7 +19,7 @@ export const BetaBanner = () => {
         beta. We appreciate your understanding! For concerns, raise an issue in
         the{" "}
         <a
-          href="https://github.com/owlicodes/promasys-ui"
+          href="https://github.com/owlicodes/proyektibo-ui"
           target="_blank"
           className="font-bold underline"
         >

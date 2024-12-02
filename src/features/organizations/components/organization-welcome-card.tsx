@@ -13,7 +13,7 @@ export const OrganizationWelcomeCard = () => {
     <Card className="mx-auto w-full md:max-w-2xl">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">
-          Welcome to <span className="text-brand">promasys</span>!
+          Welcome to <span className="text-brand">proyektibo</span>!
         </CardTitle>
         <CardDescription>
           Let&apos;s get started by choosing 1 of the following actions.

@@ -21,7 +21,7 @@ export const HeroSection = async () => {
               Hi 👋, I am{" "}
               <span className="font-bold text-yellow-400">Jose Diago</span>, and
               I built this app to help you streamline your workflow, collaborate
-              effortlessly, and deliver projects on time with promasys.
+              effortlessly, and deliver projects on time with proyektibo.
             </p>
           </div>
           <div className="space-x-4">
