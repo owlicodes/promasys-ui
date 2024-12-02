@@ -16,9 +16,5 @@ export const CreateProjectButton = () => {
       content: <ProjectForm />,
     });
 
-  return (
-    <Button className="w-full" onClick={showProjectForm}>
-      Create New Project
-    </Button>
-  );
+  return <Button onClick={showProjectForm}>Create New Project</Button>;
 };

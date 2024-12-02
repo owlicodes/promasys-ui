@@ -22,7 +22,7 @@ export default async function OrganizationLayout({
       <main className="w-full">
         <SidebarTrigger />
 
-        <div className="min-h-[calc(100vh-60px)]">{children}</div>
+        <div className="min-h-[calc(100vh-60px)] px-8">{children}</div>
       </main>
     </SidebarProvider>
   );

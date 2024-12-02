@@ -17,8 +17,6 @@ export const CreateOrganizationButton = () => {
     });
 
   return (
-    <Button className="w-full" onClick={showOrganizationForm}>
-      Create New Organization
-    </Button>
+    <Button onClick={showOrganizationForm}>Create New Organization</Button>
   );
 };
