@@ -2,22 +2,20 @@ import { z } from "zod";
 
 import { Owner } from "../common/schemas";
 
-export type TOrganization = {
+export type TProject = {
   id: string;
   name: string;
   description: string;
   createdAt: string;
+  organizationId: string;
   ownerId: string;
   owner: Owner;
 };
 
-export type TCreateOrganization = Omit<
-  TOrganization,
-  "id" | "createdAt" | "owner"
->;
-export type TUpdateOrganization = TCreateOrganization;
+export type TCreateProject = Omit<TProject, "id" | "createdAt" | "owner">;
+export type TUpdateProject = TCreateProject;
 
-export const organizationFormSchema = z.object({
+export const projectFormSchema = z.object({
   name: z
     .string()
     .trim()
@@ -30,4 +28,4 @@ export const organizationFormSchema = z.object({
     message: "Description field is required.",
   }),
 });
-export type TOrganizationFormSchema = z.infer<typeof organizationFormSchema>;
+export type TProjectSchema = z.infer<typeof projectFormSchema>;
