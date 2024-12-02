@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit2, MoreHorizontal, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -25,6 +27,16 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/${row.original.organization.name}/${row.original.id}`}
+          className="font-semibold text-brand underline"
+        >
+          {row.original.name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "description",

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { Owner } from "../common/schemas";
+import { TOrganization } from "../organizations/organization-schemas";
 
 export type TProject = {
   id: string;
@@ -10,6 +11,7 @@ export type TProject = {
   organizationId: string;
   ownerId: string;
   owner: Owner;
+  organization: TOrganization;
 };
 
 export type TCreateProject = Omit<TProject, "id" | "createdAt" | "owner">;
