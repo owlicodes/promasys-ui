@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,8 +23,10 @@ export const ProjectDetailsBreadcrumb = ({
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href={`/${selectedOrganization?.name}`}>
-            {selectedOrganization?.name}
+          <BreadcrumbLink asChild>
+            <Link href={`/${selectedOrganization?.name}`}>
+              {selectedOrganization?.name}
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

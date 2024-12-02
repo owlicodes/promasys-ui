@@ -7,7 +7,10 @@ import {
   QueryClientProvider,
   isServer,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+
+/* eslint-disable n/no-process-env */
 
 function makeQueryClient() {
   return new QueryClient({
@@ -48,6 +51,7 @@ export function QueryProvider(props: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {process.env.NODE_ENV === "development" && <ReactQueryDevtools />}
       <ReactQueryStreamedHydration>
         {props.children}
       </ReactQueryStreamedHydration>
