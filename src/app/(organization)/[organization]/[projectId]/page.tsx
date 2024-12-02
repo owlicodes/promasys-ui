@@ -1,7 +1,5 @@
+import { ProjectDetails } from "@/features/projects/components/project-details";
+
 export default function ProjectPage() {
-  return (
-    <div>
-      <h1>Project Page</h1>
-    </div>
-  );
+  return <ProjectDetails />;
 }

@@ -10,7 +10,7 @@ export const findProjectsByUserAndOrg = (
   organizationId: string | undefined
 ): Promise<TProject[]> => {
   return api
-    .get(`/projects/${organizationId}`)
+    .get(`/projects/organization/${organizationId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw error.response.data;
