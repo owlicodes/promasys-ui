@@ -3,10 +3,9 @@
 import { useParams } from "next/navigation";
 
 import { format } from "date-fns";
-import { PlusCircle } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/features/common/components/spinner";
+import { CreateNewSprintButton } from "@/features/sprints/components/create-new-sprint-button";
 
 import { useProjectDetails } from "../apis/use-project-details";
 import { ProjectDetailsBreadcrumb } from "./project-details-breadcrumb";
@@ -48,10 +47,7 @@ export const ProjectDetails = () => {
             <p>{format(project.data.createdAt, "PPP")}</p>
           </div>
         </div>
-        <Button className="mt-4">
-          <PlusCircle />
-          Create New Sprint
-        </Button>
+        <CreateNewSprintButton />
       </div>
     </div>
   );

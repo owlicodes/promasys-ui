@@ -1,0 +1,27 @@
+import { z } from "zod";
+
+export type TSprint = {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  status: "PLANNED" | "STARTED" | "CLOSED";
+  projectId: string;
+};
+
+export const sprintFormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Name is required." })
+    .max(50, { message: "Name is too long." })
+    .regex(/^[a-zA-Z0-9\s-]+$/, {
+      message: "Name can only contain letters, numbers, spaces, and hyphens.",
+    }),
+  dateRange: z.object({
+    from: z.date(),
+    to: z.date(),
+  }),
+  status: z.enum(["PLANNED", "STARTED", "CLOSED"]),
+});
+export type TSprintFormSchema = z.infer<typeof sprintFormSchema>;

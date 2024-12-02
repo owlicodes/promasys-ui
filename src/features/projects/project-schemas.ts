@@ -21,8 +21,8 @@ export const projectFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, { message: "Name is required" })
-    .max(50, { message: "Name is too long" })
+    .min(1, { message: "Name is required." })
+    .max(50, { message: "Name is too long." })
     .regex(/^[a-zA-Z0-9\s-]+$/, {
       message: "Name can only contain letters, numbers, spaces, and hyphens.",
     }),
