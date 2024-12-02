@@ -1,8 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit2, MoreHorizontal } from "lucide-react";
+import { Edit2, MoreHorizontal, Trash } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,16 +12,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DeleteContent } from "@/features/common/components/delete-content";
 import { ProjectForm } from "@/features/projects/components/project-form";
 import { TProject } from "@/features/projects/project-schemas";
+import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
-/* eslint-disable react-hooks/rules-of-hooks */
+import { useDeleteProject } from "../apis/use-delete-project";
 
 /* eslint-disable react-hooks/rules-of-hooks */
-
-/* eslint-disable react-hooks/rules-of-hooks */
-
 export const organizationProjectColumns: ColumnDef<TProject>[] = [
   {
     accessorKey: "name",
@@ -36,6 +35,30 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
     cell: ({ row }) => {
       const project = row.original;
       const { setDialogConfig } = useDialogConfigStore();
+      const session = useSession();
+      const deleteProject = useDeleteProject(
+        session.data?.user.id,
+        project.organizationId
+      );
+      const { toast } = useToast();
+
+      const deleteCallback = () => {
+        deleteProject.mutate(project.id, {
+          onSuccess: () => {
+            toast({
+              title: "Delete Project",
+            });
+            setDialogConfig(undefined);
+          },
+          onError: (error) => {
+            toast({
+              title: error.message,
+              variant: "destructive",
+            });
+            setDialogConfig(undefined);
+          },
+        });
+      };
 
       const showEditProjectForm = () => {
         setDialogConfig({
@@ -43,6 +66,15 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
           title: `Update ${project.name}`,
           description: "",
           content: <ProjectForm data={project} />,
+        });
+      };
+
+      const showDeleteProjectConfirmation = () => {
+        setDialogConfig({
+          open: true,
+          title: "Delete Project",
+          description: project.name,
+          content: <DeleteContent deleteCallback={deleteCallback} />,
         });
       };
 
@@ -62,7 +94,16 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
             >
               <div className="flex items-center gap-2">
                 <Edit2 className="h-4 w-4" />
-                <span>Edit Project</span>
+                <span>Edit</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={showDeleteProjectConfirmation}
+            >
+              <div className="flex items-center gap-2 text-red-500">
+                <Trash className="h-4 w-4" />
+                <span>Delete</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
