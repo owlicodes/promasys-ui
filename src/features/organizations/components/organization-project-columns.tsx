@@ -31,6 +31,10 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
     header: "Description",
   },
   {
+    accessorKey: "owner.email",
+    header: "Owner",
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const project = row.original;

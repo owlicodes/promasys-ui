@@ -1,5 +1,7 @@
 "use client";
 
+import { PlusCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import useDialogConfigStore from "@/stores/dialog-store";
 
@@ -17,6 +19,9 @@ export const CreateOrganizationButton = () => {
     });
 
   return (
-    <Button onClick={showOrganizationForm}>Create New Organization</Button>
+    <Button onClick={showOrganizationForm}>
+      <PlusCircle />
+      Create New Organization
+    </Button>
   );
 };

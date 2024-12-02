@@ -1,5 +1,7 @@
 "use client";
 
+import { PlusCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import useDialogConfigStore from "@/stores/dialog-store";
 
@@ -16,5 +18,10 @@ export const CreateProjectButton = () => {
       content: <ProjectForm />,
     });
 
-  return <Button onClick={showProjectForm}>Create New Project</Button>;
+  return (
+    <Button onClick={showProjectForm}>
+      <PlusCircle />
+      Create New Project
+    </Button>
+  );
 };
