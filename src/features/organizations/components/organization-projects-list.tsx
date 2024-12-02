@@ -22,6 +22,10 @@ export const OrganizationProjectsList = () => {
     return <Spinner />;
   }
 
+  if (!selectedOrganization) {
+    return null;
+  }
+
   return (
     <Card className="space-y-6 p-6">
       <CardTitle className="text-2xl font-bold">
