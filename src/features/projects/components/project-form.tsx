@@ -20,6 +20,7 @@ import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useCreateProject } from "../apis/use-create-project";
+import { useUpdateProject } from "../apis/use-update-project";
 import {
   TProject,
   TProjectSchema,
@@ -38,6 +39,10 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
   const createProject = useCreateProject(session.data?.user.id);
+  const updateProject = useUpdateProject(
+    session.data?.user.id,
+    data?.organizationId
+  );
   const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
@@ -69,22 +74,20 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
           }
         );
       } else {
-        // updateOrganization.mutate(
-        //   {
-        //     organizationId: data.id,
-        //     data: {
-        //       ...values,
-        //       ownerId: data.ownerId,
-        //     },
-        //   },
-        //   {
-        //     onSuccess: () => {
-        //       showSuccess("Organization updated.");
-        //       router.push(values.name as Route);
-        //     },
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        updateProject.mutate(
+          {
+            projectId: data.id,
+            data: {
+              ...values,
+              organizationId: data.organizationId,
+              ownerId: data.ownerId,
+            },
+          },
+          {
+            onSuccess: () => showSuccess("Project updated."),
+            onError: (error) => showError(error.message),
+          }
+        );
       }
     }
   };
@@ -122,7 +125,9 @@ export const ProjectForm = ({ data }: { data?: TProject }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={createProject.isPending}>
+        <SubmitButton
+          isPending={createProject.isPending || updateProject.isPending}
+        >
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>
