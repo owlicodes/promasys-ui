@@ -3,11 +3,13 @@ import { z } from "zod";
 export type TSprint = {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   status: "PLANNED" | "STARTED" | "CLOSED";
   projectId: string;
 };
+
+export type TCreateSprint = Omit<TSprint, "id">;
 
 export const sprintFormSchema = z.object({
   name: z

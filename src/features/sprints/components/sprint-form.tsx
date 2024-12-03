@@ -1,5 +1,7 @@
 "use client";
 
+import { useParams } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -34,9 +36,11 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import useDialogConfigStore from "@/stores/dialog-store";
 
+import { useCreateSprint } from "../apis/use-create-project";
 import { TSprint, TSprintFormSchema, sprintFormSchema } from "../sprint-schema";
 
 export const SprintForm = ({ data }: { data?: TSprint }) => {
+  const { projectId } = useParams<{ projectId: string }>();
   const form = useForm<TSprintFormSchema>({
     resolver: zodResolver(sprintFormSchema),
     defaultValues: {
@@ -51,6 +55,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
+  const createSprint = useCreateSprint();
 
   const showError = (message: string) =>
     toast({
@@ -71,17 +76,19 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
 
     if (session.data?.user) {
       if (!data) {
-        // createProject.mutate(
-        //   {
-        //     ...values,
-        //     organizationId: selectedOrganization.id,
-        //     ownerId: session.data.user.id,
-        //   },
-        //   {
-        //     onSuccess: () => showSuccess("Project created."),
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        createSprint.mutate(
+          {
+            name: values.name,
+            startDate: values.dateRange.from.toISOString(),
+            endDate: values.dateRange.to.toISOString(),
+            status: values.status,
+            projectId: projectId,
+          },
+          {
+            onSuccess: () => showSuccess("Project created."),
+            onError: (error) => showError(error.message),
+          }
+        );
       } else {
         // updateProject.mutate(
         //   {
@@ -188,7 +195,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={false}>
+        <SubmitButton isPending={createSprint.isPending}>
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>
