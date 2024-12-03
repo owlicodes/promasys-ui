@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { format } from "date-fns";
 import { CalendarDays, Edit, Mail, Trash2 } from "lucide-react";
@@ -9,27 +9,20 @@ import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeleteContent } from "@/features/common/components/delete-content";
-import { Spinner } from "@/features/common/components/spinner";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useDeleteOrganization } from "../apis/use-delete-organization";
-import { useOrganizations } from "../apis/use-organizations";
-import { getSelectedOrganization } from "../helpers";
 import { OrganizationForm } from "./organization-form";
 
 export const CurrentOrganizationCard = () => {
-  const { organization } = useParams<{ organization: string }>();
   const session = useSession();
-  const organizations = useOrganizations(session.data?.user.id);
-  const selectedOrganization = getSelectedOrganization(
-    organization,
-    organizations.data
-  );
   const { setDialogConfig } = useDialogConfigStore();
   const deleteOrganization = useDeleteOrganization(session.data?.user.id);
   const { toast } = useToast();
   const router = useRouter();
+  const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showOrganizationForm = () =>
     setDialogConfig({
@@ -70,10 +63,6 @@ export const CurrentOrganizationCard = () => {
       });
     }
   };
-
-  if (organizations.isLoading) {
-    return <Spinner />;
-  }
 
   if (!selectedOrganization) {
     return null;

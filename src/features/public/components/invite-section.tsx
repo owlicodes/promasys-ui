@@ -22,7 +22,7 @@ export const InviteSection = async () => {
               their project management.{" "}
               <span className="italic">
                 Just kidding, I don&apos;t have thousands of users, but maybe
-                join me in using proyektibobo
+                join me in using proyektibo.
               </span>
               .
             </p>

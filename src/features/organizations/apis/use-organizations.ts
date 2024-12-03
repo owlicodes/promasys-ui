@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { STALE_TIME } from "@/features/common/apis/constants";
 import { api } from "@/lib/api-client";
 
 import { TOrganization } from "../organization-schemas";
@@ -17,5 +18,5 @@ export const useOrganizations = (userId: string | undefined) =>
   useQuery({
     queryKey: organizationQueryKeys.byUserId(userId),
     queryFn: findOrganizations,
-    staleTime: 60 * 1000 * 30,
+    staleTime: STALE_TIME._30m,
   });

@@ -5,23 +5,23 @@ import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useDialogConfigStore from "@/stores/dialog-store";
 
-import { OrganizationForm } from "./organization-form";
+import { ProjectForm } from "./project-form";
 
-export const CreateOrganizationButton = () => {
+export const CreateProjectButton = () => {
   const { setDialogConfig } = useDialogConfigStore();
 
-  const showOrganizationForm = () =>
+  const showProjectForm = () =>
     setDialogConfig({
       open: true,
-      title: "Create New Organization",
+      title: "Create New Project",
       description: "",
-      content: <OrganizationForm />,
+      content: <ProjectForm />,
     });
 
   return (
-    <Button onClick={showOrganizationForm}>
+    <Button onClick={showProjectForm}>
       <PlusCircle />
-      Create New Organization
+      Create New Project
     </Button>
   );
 };

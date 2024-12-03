@@ -1,8 +1,5 @@
 "use client";
 
-import { Route } from "next";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -20,29 +17,33 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/features/common/components/submit-button";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
-import { useCreateOrganization } from "../apis/use-create-organization";
-import { useUpdateOrganization } from "../apis/use-update-organization";
+import { useCreateProject } from "../apis/use-create-project";
+import { useUpdateProject } from "../apis/use-update-project";
 import {
-  TOrganization,
-  TOrganizationFormSchema,
-  organizationFormSchema,
-} from "../organization-schemas";
+  TProject,
+  TProjectSchema,
+  projectFormSchema,
+} from "../project-schemas";
 
-export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
-  const form = useForm<TOrganizationFormSchema>({
-    resolver: zodResolver(organizationFormSchema),
+export const ProjectForm = ({ data }: { data?: TProject }) => {
+  const form = useForm<TProjectSchema>({
+    resolver: zodResolver(projectFormSchema),
     defaultValues: {
       name: data?.name || "",
       description: data?.description || "",
     },
   });
   const session = useSession();
-  const createOrganization = useCreateOrganization(session.data?.user.id);
-  const updateOrganization = useUpdateOrganization(session.data?.user.id);
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
-  const router = useRouter();
+  const createProject = useCreateProject(session.data?.user.id);
+  const updateProject = useUpdateProject(
+    session.data?.user.id,
+    data?.organizationId
+  );
+  const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
     toast({
@@ -58,36 +59,32 @@ export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
     });
   };
 
-  const onSubmit = (values: TOrganizationFormSchema) => {
-    if (session.data?.user) {
+  const onSubmit = (values: TProjectSchema) => {
+    if (session.data?.user && selectedOrganization) {
       if (!data) {
-        createOrganization.mutate(
+        createProject.mutate(
           {
             ...values,
-            ownerId: session.data?.user.id,
+            organizationId: selectedOrganization.id,
+            ownerId: session.data.user.id,
           },
           {
-            onSuccess: () => {
-              showSuccess("Organization created.");
-              router.push(values.name as Route);
-            },
+            onSuccess: () => showSuccess("Project created."),
             onError: (error) => showError(error.message),
           }
         );
       } else {
-        updateOrganization.mutate(
+        updateProject.mutate(
           {
-            organizationId: data.id,
+            projectId: data.id,
             data: {
               ...values,
+              organizationId: data.organizationId,
               ownerId: data.ownerId,
             },
           },
           {
-            onSuccess: () => {
-              showSuccess("Organization updated.");
-              router.push(values.name as Route);
-            },
+            onSuccess: () => showSuccess("Project updated."),
             onError: (error) => showError(error.message),
           }
         );
@@ -129,9 +126,7 @@ export const OrganizationForm = ({ data }: { data?: TOrganization }) => {
           )}
         />
         <SubmitButton
-          isPending={
-            createOrganization.isPending || updateOrganization.isPending
-          }
+          isPending={createProject.isPending || updateProject.isPending}
         >
           {data ? "Update" : "Create"}
         </SubmitButton>

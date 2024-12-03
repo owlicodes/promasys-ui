@@ -5,23 +5,23 @@ import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useDialogConfigStore from "@/stores/dialog-store";
 
-import { OrganizationForm } from "./organization-form";
+import { SprintForm } from "./sprint-form";
 
-export const CreateOrganizationButton = () => {
+export const CreateNewSprintButton = () => {
   const { setDialogConfig } = useDialogConfigStore();
 
-  const showOrganizationForm = () =>
+  const showSprintForm = () =>
     setDialogConfig({
       open: true,
-      title: "Create New Organization",
+      title: "Create New Sprint",
       description: "",
-      content: <OrganizationForm />,
+      content: <SprintForm />,
     });
 
   return (
-    <Button onClick={showOrganizationForm}>
+    <Button className="mt-4" onClick={showSprintForm}>
       <PlusCircle />
-      Create New Organization
+      Create New Sprint
     </Button>
   );
 };
