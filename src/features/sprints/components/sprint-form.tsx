@@ -36,7 +36,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import useDialogConfigStore from "@/stores/dialog-store";
 
-import { useCreateSprint } from "../apis/use-create-project";
+import { useCreateSprint } from "../apis/use-create-sprint";
 import { TSprint, TSprintFormSchema, sprintFormSchema } from "../sprint-schema";
 
 export const SprintForm = ({ data }: { data?: TSprint }) => {
@@ -55,7 +55,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
-  const createSprint = useCreateSprint();
+  const createSprint = useCreateSprint(projectId);
 
   const showError = (message: string) =>
     toast({
