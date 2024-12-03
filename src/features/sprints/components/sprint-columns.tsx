@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Edit2, MoreHorizontal, Trash } from "lucide-react";
@@ -16,6 +18,7 @@ import {
 import { DeleteContent } from "@/features/common/components/delete-content";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useDeleteSprint } from "../apis/use-delete-sprint";
 import { TSprint } from "../sprint-schema";
@@ -27,6 +30,18 @@ export const sprintColumns: ColumnDef<TSprint>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const { selectedOrganization } = useSelectedOrganizationStore();
+
+      return (
+        <Link
+          href={`/${selectedOrganization?.name}/${row.original.projectId}/${row.original.id}`}
+          className="font-semibold text-brand underline"
+        >
+          {row.original.name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "startDate",
