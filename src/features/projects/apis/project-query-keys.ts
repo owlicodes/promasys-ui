@@ -11,4 +11,10 @@ export const projectQueryKeys = {
     projectId,
     "sprints",
   ],
+  projectSprintById: (projectId: string, sprintId: string) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "sprints",
+    sprintId,
+  ],
 };

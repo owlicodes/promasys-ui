@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { STALE_TIME } from "@/features/common/apis/constants";
 import { api } from "@/lib/api-client";
 
 import { TProject } from "../project-schemas";
@@ -18,4 +19,5 @@ export const useProjectDetails = (projectId: string) =>
     queryKey: projectQueryKeys.byProjectId(projectId),
     queryFn: () => findProjectById(projectId),
     enabled: Boolean(projectId),
+    staleTime: STALE_TIME._30m,
   });
