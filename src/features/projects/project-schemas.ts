@@ -14,7 +14,10 @@ export type TProject = {
   organization: TOrganization;
 };
 
-export type TCreateProject = Omit<TProject, "id" | "createdAt" | "owner">;
+export type TCreateProject = Omit<
+  TProject,
+  "id" | "createdAt" | "owner" | "organization"
+>;
 export type TUpdateProject = TCreateProject;
 
 export const projectFormSchema = z.object({

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function Calendar({
   className,
   classNames,
