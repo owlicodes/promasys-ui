@@ -2,11 +2,23 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { Edit2, MoreHorizontal, Trash } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DeleteContent } from "@/features/common/components/delete-content";
+import useDialogConfigStore from "@/stores/dialog-store";
 
 import { TSprint } from "../sprint-schema";
 import { SPRINT_STATUS_MAP } from "../utils";
+import { SprintForm } from "./sprint-form";
 
 /* eslint-disable react-hooks/rules-of-hooks */
 export const sprintColumns: ColumnDef<TSprint>[] = [
@@ -39,85 +51,79 @@ export const sprintColumns: ColumnDef<TSprint>[] = [
       );
     },
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const project = row.original;
-  //     const { setDialogConfig } = useDialogConfigStore();
-  //     const session = useSession();
-  //     const deleteProject = useDeleteProject(
-  //       session.data?.user.id,
-  //       project.organizationId
-  //     );
-  //     const { toast } = useToast();
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const sprint = row.original;
+      const { setDialogConfig } = useDialogConfigStore();
 
-  //     const deleteCallback = () => {
-  //       deleteProject.mutate(project.id, {
-  //         onSuccess: () => {
-  //           toast({
-  //             title: "Delete Project",
-  //           });
-  //           setDialogConfig(undefined);
-  //         },
-  //         onError: (error) => {
-  //           toast({
-  //             title: error.message,
-  //             variant: "destructive",
-  //           });
-  //           setDialogConfig(undefined);
-  //         },
-  //       });
-  //     };
+      const deleteCallback = () => {
+        // deleteProject.mutate(project.id, {
+        //   onSuccess: () => {
+        //     toast({
+        //       title: "Delete Project",
+        //     });
+        //     setDialogConfig(undefined);
+        //   },
+        //   onError: (error) => {
+        //     toast({
+        //       title: error.message,
+        //       variant: "destructive",
+        //     });
+        //     setDialogConfig(undefined);
+        //   },
+        // });
+      };
 
-  //     const showEditProjectForm = () => {
-  //       setDialogConfig({
-  //         open: true,
-  //         title: `Update ${project.name}`,
-  //         description: "",
-  //         content: <ProjectForm data={project} />,
-  //       });
-  //     };
+      const showEditSprintForm = () => {
+        setDialogConfig({
+          open: true,
+          title: `Update ${sprint.name}`,
+          description: "",
+          content: <SprintForm data={sprint} />,
+        });
+      };
 
-  //     const showDeleteProjectConfirmation = () => {
-  //       setDialogConfig({
-  //         open: true,
-  //         title: "Delete Project",
-  //         description: project.name,
-  //         content: <DeleteContent deleteCallback={deleteCallback} />,
-  //       });
-  //     };
+      const showDeleteSprintConfirmation = () => {
+        setDialogConfig({
+          open: true,
+          title: "Delete Sprint",
+          description: sprint.name,
+          content: <DeleteContent deleteCallback={deleteCallback} />,
+        });
+      };
 
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={showEditProjectForm}
-  //             className="cursor-pointer"
-  //           >
-  //             <div className="flex items-center gap-2">
-  //               <Edit2 className="h-4 w-4" />
-  //               <span>Edit</span>
-  //             </div>
-  //           </DropdownMenuItem>
-  //           <DropdownMenuItem
-  //             className="cursor-pointer"
-  //             onClick={showDeleteProjectConfirmation}
-  //           >
-  //             <div className="flex items-center gap-2 text-red-500">
-  //               <Trash className="h-4 w-4" />
-  //               <span>Delete</span>
-  //             </div>
-  //           </DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={showEditSprintForm}
+              className="cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <Edit2 className="h-4 w-4" />
+                <span>Edit</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={showDeleteSprintConfirmation}
+            >
+              <div className="flex items-center gap-2 text-red-500">
+                <Trash className="h-4 w-4" />
+                <span>Delete</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];

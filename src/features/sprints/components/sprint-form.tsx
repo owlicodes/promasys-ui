@@ -37,6 +37,7 @@ import { cn } from "@/lib/utils";
 import useDialogConfigStore from "@/stores/dialog-store";
 
 import { useCreateSprint } from "../apis/use-create-sprint";
+import { useUpdateSprint } from "../apis/use-update-sprint";
 import { TSprint, TSprintFormSchema, sprintFormSchema } from "../sprint-schema";
 
 export const SprintForm = ({ data }: { data?: TSprint }) => {
@@ -46,16 +47,17 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
     defaultValues: {
       name: data?.name || "",
       dateRange: {
-        from: undefined,
-        to: undefined,
+        from: data?.startDate ? new Date(data.startDate) : undefined,
+        to: data?.endDate ? new Date(data.endDate) : undefined,
       },
-      status: "PLANNED",
+      status: data?.status ? data.status : "PLANNED",
     },
   });
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
   const createSprint = useCreateSprint(projectId);
+  const updateSprint = useUpdateSprint(projectId);
 
   const showError = (message: string) =>
     toast({
@@ -90,20 +92,20 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
           }
         );
       } else {
-        // updateProject.mutate(
-        //   {
-        //     projectId: data.id,
-        //     data: {
-        //       ...values,
-        //       organizationId: data.organizationId,
-        //       ownerId: data.ownerId,
-        //     },
-        //   },
-        //   {
-        //     onSuccess: () => showSuccess("Project updated."),
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        updateSprint.mutate(
+          {
+            id: data.id,
+            name: values.name,
+            startDate: values.dateRange.from.toISOString(),
+            endDate: values.dateRange.to.toISOString(),
+            status: values.status,
+            projectId: projectId,
+          },
+          {
+            onSuccess: () => showSuccess("Sprint updated."),
+            onError: (error) => showError(error.message),
+          }
+        );
       }
     }
   };
@@ -195,7 +197,9 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={createSprint.isPending}>
+        <SubmitButton
+          isPending={createSprint.isPending || updateSprint.isPending}
+        >
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>

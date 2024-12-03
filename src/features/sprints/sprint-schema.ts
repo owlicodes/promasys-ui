@@ -10,6 +10,7 @@ export type TSprint = {
 };
 
 export type TCreateSprint = Omit<TSprint, "id">;
+export type TUpdateSprint = TSprint;
 
 export const sprintFormSchema = z.object({
   name: z

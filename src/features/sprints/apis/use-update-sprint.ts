@@ -3,21 +3,21 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { projectQueryKeys } from "@/features/projects/apis/project-query-keys";
 import { api } from "@/lib/api-client";
 
-import { TCreateSprint, TSprint } from "../sprint-schema";
+import { TSprint, TUpdateSprint } from "../sprint-schema";
 
-const createSprint = (data: TCreateSprint): Promise<TSprint> =>
+const updateSprint = (data: TUpdateSprint): Promise<TSprint> =>
   api
-    .post(`/projects/${data.projectId}/sprints`, data)
+    .patch(`/projects/${data.projectId}/sprints/${data.id}`, data)
     .then((response) => response.data)
     .catch((error) => {
       throw error.response.data;
     });
 
-export const useCreateSprint = (projectId: string) => {
+export const useUpdateSprint = (projectId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createSprint,
+    mutationFn: updateSprint,
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.sprintsByProjectId(projectId),
