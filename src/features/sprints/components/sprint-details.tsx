@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/features/common/components/spinner";
 import { useProjectDetails } from "@/features/projects/apis/use-project-details";
+import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 
 import { useSprintDetails } from "../apis/use-sprint-details";
 import { SPRINT_STATUS_MAP } from "../utils";
@@ -62,6 +63,8 @@ export const SprintDetails = () => {
             <p>{format(sprint.data.endDate, "PPP")}</p>
           </div>
         </div>
+
+        <CreateNewWorkItem />
       </div>
     </div>
   );
