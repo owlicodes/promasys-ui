@@ -3,8 +3,9 @@
 import { useParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, XIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
@@ -156,6 +157,12 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
+                    <div className="m-1 flex">
+                      <div className="flex-1"></div>
+                      <PopoverClose>
+                        <XIcon className="h-5 w-5" />
+                      </PopoverClose>
+                    </div>
                     <Calendar
                       initialFocus
                       mode="range"
