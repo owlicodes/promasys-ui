@@ -62,7 +62,7 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
         deleteProject.mutate(project.id, {
           onSuccess: () => {
             toast({
-              title: "Delete Project",
+              title: "Project deleted",
             });
             setDialogConfig(undefined);
           },

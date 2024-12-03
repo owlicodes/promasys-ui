@@ -14,8 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteContent } from "@/features/common/components/delete-content";
+import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
+import { useDeleteSprint } from "../apis/use-delete-sprint";
 import { TSprint } from "../sprint-schema";
 import { SPRINT_STATUS_MAP } from "../utils";
 import { SprintForm } from "./sprint-form";
@@ -56,23 +58,31 @@ export const sprintColumns: ColumnDef<TSprint>[] = [
     cell: ({ row }) => {
       const sprint = row.original;
       const { setDialogConfig } = useDialogConfigStore();
+      const deleteSprint = useDeleteSprint(row.original.projectId);
+      const { toast } = useToast();
 
       const deleteCallback = () => {
-        // deleteProject.mutate(project.id, {
-        //   onSuccess: () => {
-        //     toast({
-        //       title: "Delete Project",
-        //     });
-        //     setDialogConfig(undefined);
-        //   },
-        //   onError: (error) => {
-        //     toast({
-        //       title: error.message,
-        //       variant: "destructive",
-        //     });
-        //     setDialogConfig(undefined);
-        //   },
-        // });
+        deleteSprint.mutate(
+          {
+            projectId: row.original.projectId,
+            sprintId: row.original.id,
+          },
+          {
+            onSuccess: () => {
+              toast({
+                title: "Sprint deleted.",
+              });
+              setDialogConfig(undefined);
+            },
+            onError: (error) => {
+              toast({
+                title: error.message,
+                variant: "destructive",
+              });
+              setDialogConfig(undefined);
+            },
+          }
+        );
       };
 
       const showEditSprintForm = () => {

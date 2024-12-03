@@ -21,10 +21,17 @@ export const sprintFormSchema = z.object({
     .regex(/^[a-zA-Z0-9\s-]+$/, {
       message: "Name can only contain letters, numbers, spaces, and hyphens.",
     }),
-  dateRange: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
+  dateRange: z
+    .object(
+      {
+        from: z.date().optional(),
+        to: z.date().optional(),
+      },
+      { required_error: "Sprint date range is required." }
+    )
+    .refine((date) => {
+      return !!date.from;
+    }, "Sprint date range is required."),
   status: z.enum(["PLANNED", "STARTED", "CLOSED"]),
 });
 export type TSprintFormSchema = z.infer<typeof sprintFormSchema>;

@@ -74,9 +74,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
   };
 
   const onSubmit = (values: TSprintFormSchema) => {
-    console.log(values);
-
-    if (session.data?.user) {
+    if (session.data?.user && values.dateRange.from && values.dateRange.to) {
       if (!data) {
         createSprint.mutate(
           {
@@ -131,7 +129,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
           name="dateRange"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Date</FormLabel>
+              <FormLabel>Sprint Date</FormLabel>
               <FormControl>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -161,8 +159,8 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
                     <Calendar
                       initialFocus
                       mode="range"
-                      defaultMonth={field.value?.from}
-                      selected={field.value}
+                      defaultMonth={field.value.from}
+                      selected={{ from: field.value.from!, to: field.value.to }}
                       onSelect={field.onChange}
                       numberOfMonths={2}
                     />
