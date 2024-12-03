@@ -1,8 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+
+import { Badge } from "@/components/ui/badge";
 
 import { TSprint } from "../sprint-schema";
+import { SPRINT_STATUS_MAP } from "../utils";
 
 /* eslint-disable react-hooks/rules-of-hooks */
 export const sprintColumns: ColumnDef<TSprint>[] = [
@@ -13,14 +17,27 @@ export const sprintColumns: ColumnDef<TSprint>[] = [
   {
     accessorKey: "startDate",
     header: "Start Date",
+    cell: ({ row }) => {
+      return <span>{format(row.original.startDate, "PPP")}</span>;
+    },
   },
   {
     accessorKey: "endDate",
     header: "End Date",
+    cell: ({ row }) => {
+      return <span>{format(row.original.endDate, "PPP")}</span>;
+    },
   },
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      return (
+        <Badge className={`${SPRINT_STATUS_MAP[row.original.status].color}`}>
+          {SPRINT_STATUS_MAP[row.original.status].label}
+        </Badge>
+      );
+    },
   },
   // {
   //   id: "actions",
