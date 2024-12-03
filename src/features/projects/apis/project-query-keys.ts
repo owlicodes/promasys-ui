@@ -6,4 +6,9 @@ export const projectQueryKeys = {
     userId: string | undefined,
     organizationId: string | undefined
   ) => [...projectQueryKeys.root, userId, organizationId],
+  sprintsByProjectId: (projectId: string) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "sprints",
+  ],
 };

@@ -85,7 +85,7 @@ export const SprintForm = ({ data }: { data?: TSprint }) => {
             projectId: projectId,
           },
           {
-            onSuccess: () => showSuccess("Project created."),
+            onSuccess: () => showSuccess("Sprint created."),
             onError: (error) => showError(error.message),
           }
         );
