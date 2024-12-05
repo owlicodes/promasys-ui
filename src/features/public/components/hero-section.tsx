@@ -15,13 +15,15 @@ export const HeroSection = async () => {
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
             <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl/none">
-              Manage Your Projects with Ease
+              Manage Your Agile Projects with Ease
             </h1>
             <p className="mx-auto max-w-[700px] tracking-tight md:text-xl">
               Hi 👋, I am{" "}
               <span className="font-bold text-yellow-400">Jose Diago</span>, and
-              I built this app to help you streamline your workflow, collaborate
-              effortlessly, and deliver projects on time with proyektibo.
+              I built this app to help you embrace{" "}
+              <span className="font-bold text-yellow-400">Agile</span>{" "}
+              principles, streamline sprints, foster collaboration, and deliver
+              projects efficiently with proyektibo.
             </p>
           </div>
           <div className="space-x-4">
