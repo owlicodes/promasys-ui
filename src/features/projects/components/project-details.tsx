@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { Spinner } from "@/features/common/components/spinner";
 import { CreateNewSprintButton } from "@/features/sprints/components/create-new-sprint-button";
 import { SprintsList } from "@/features/sprints/components/sprints-list";
+import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 
 import { useProjectDetails } from "../apis/use-project-details";
 import { useProjectSprints } from "../apis/use-project-sprints";
@@ -51,7 +52,10 @@ export const ProjectDetails = () => {
             <p>{format(project.data.createdAt, "PPP")}</p>
           </div>
         </div>
-        <CreateNewSprintButton />
+        <div className="space-x-4">
+          <CreateNewSprintButton />
+          <CreateNewWorkItem />
+        </div>
       </div>
 
       <SprintsList data={sprints.data || []} />
