@@ -1,25 +1,29 @@
 "use client";
 
+import { Route } from "next";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
 import { PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 export const CreateNewWorkItem = () => {
-  const { setDialogConfig } = useDialogConfigStore();
-
-  const showWorkItemForm = () =>
-    setDialogConfig({
-      open: true,
-      title: "Create New Work Item",
-      description: "",
-      content: <h1>Work Item Form</h1>,
-    });
+  const { selectedOrganization } = useSelectedOrganizationStore();
+  const { projectId, sprintId } = useParams<{
+    projectId: string;
+    sprintId: string;
+  }>();
+  const initialHref = `/${selectedOrganization?.name}/${projectId}`;
+  const href = `${initialHref}/${sprintId ? `${sprintId}/create-work-item` : "create-work-item"}`;
 
   return (
-    <Button className="mt-4" onClick={showWorkItemForm}>
-      <PlusCircle />
-      Create New Work Item
+    <Button className="mt-4">
+      <Link href={href as Route} className="flex items-center gap-2">
+        <PlusCircle />
+        <span>Create New Work Item</span>
+      </Link>
     </Button>
   );
 };
