@@ -39,7 +39,7 @@ export const OrganizationSwitcher = () => {
     setSelectedOrganization(selectedOrganization);
   }, [setSelectedOrganization, selectedOrganization]);
 
-  const onSwitchHandler = (name: string) => router.push(name as Route);
+  const onSwitchHandler = (name: string) => router.push(`/${name}` as Route);
 
   return (
     <SidebarMenu>
