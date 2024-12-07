@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
+import { useCreateWorkItem } from "../apis/use-create-work-item";
 import {
   TWorkItem,
   TWorkItemFormSchema,
@@ -55,7 +56,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
     sprintId: string;
   }>();
   const projectUsers = useProjectUsers(projectId);
-
+  const createWorkItem = useCreateWorkItem();
   const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
@@ -75,17 +76,17 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   const onSubmit = (values: TWorkItemFormSchema) => {
     if (session.data?.user && selectedOrganization) {
       if (!data) {
-        // createProject.mutate(
-        //   {
-        //     ...values,
-        //     organizationId: selectedOrganization.id,
-        //     ownerId: session.data.user.id,
-        //   },
-        //   {
-        //     onSuccess: () => showSuccess("Project created."),
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        createWorkItem.mutate(
+          {
+            ...values,
+            projectId,
+            createdByUserId: session.data.user.id,
+          },
+          {
+            onSuccess: () => showSuccess("Project created."),
+            onError: (error) => showError(error.message),
+          }
+        );
       } else {
         // updateProject.mutate(
         //   {
@@ -222,7 +223,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={false}>
+        <SubmitButton isPending={createWorkItem.isPending}>
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>

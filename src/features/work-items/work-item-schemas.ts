@@ -5,7 +5,7 @@ export type TWorkItem = {
   title: string;
   description: string;
   type: "NONE" | "STORY" | "TASK" | "BUG";
-  storyPoint: number;
+  storyPoint?: number;
   status: "PENDING" | "IN_PROGRESS" | "DONE" | "CLOSED";
   createdByUserId: string;
   assignedToUserId?: string;
@@ -13,6 +13,8 @@ export type TWorkItem = {
   sprintId?: string;
   createdAt: string;
 };
+
+export type TCreateWorkItem = Omit<TWorkItem, "id" | "createdAt">;
 
 export const workItemFormSchema = z.object({
   title: z
