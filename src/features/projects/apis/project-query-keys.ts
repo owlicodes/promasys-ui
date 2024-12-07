@@ -17,4 +17,9 @@ export const projectQueryKeys = {
     "sprints",
     sprintId,
   ],
+  projectUsers: (projectId: string | undefined) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "users",
+  ],
 };

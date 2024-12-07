@@ -1,5 +1,7 @@
 "use client";
 
+import { useParams } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -22,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/features/common/components/submit-button";
+import { useProjectUsers } from "@/features/projects/apis/use-project-users";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
@@ -30,7 +33,7 @@ import {
   TWorkItem,
   TWorkItemFormSchema,
   workItemFormSchema,
-} from "./work-item-schema";
+} from "../work-item-schemas";
 
 export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   const form = useForm<TWorkItemFormSchema>({
@@ -47,6 +50,11 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
+  const { projectId, sprintId } = useParams<{
+    projectId: string;
+    sprintId: string;
+  }>();
+  const projectUsers = useProjectUsers(projectId);
 
   const { selectedOrganization } = useSelectedOrganizationStore();
 
@@ -203,9 +211,11 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="jomardiago@gmail.com">
-                    jomardiago@gmail.com
-                  </SelectItem>
+                  {projectUsers.data?.map((projectUser) => (
+                    <SelectItem key={projectUser.id} value={projectUser.id}>
+                      {projectUser.email}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
