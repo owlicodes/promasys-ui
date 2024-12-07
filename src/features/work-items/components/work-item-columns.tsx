@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit2, MoreHorizontal, Trash } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import { DeleteContent } from "@/features/common/components/delete-content";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
+import { WORK_ITEM_STATUS_MAP, WORK_ITEM_TYPES_MAP } from "../utils";
 import { TWorkItem } from "../work-item-schemas";
 
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -22,6 +24,36 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   {
     accessorKey: "title",
     header: "Title",
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => {
+      const workItem = row.original;
+
+      return (
+        <Badge className={WORK_ITEM_TYPES_MAP[workItem.type].color}>
+          {WORK_ITEM_TYPES_MAP[workItem.type].label}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const workItem = row.original;
+
+      return (
+        <Badge className={WORK_ITEM_STATUS_MAP[workItem.status].color}>
+          {WORK_ITEM_STATUS_MAP[workItem.status].label}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "storyPoint",
+    header: "Story Point",
   },
   {
     id: "actions",
