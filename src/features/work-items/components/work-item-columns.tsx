@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteContent } from "@/features/common/components/delete-content";
-import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
@@ -81,7 +80,7 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
     cell: ({ row }) => {
       const workItem = row.original;
       const { setDialogConfig } = useDialogConfigStore();
-      const { toast } = useToast();
+      // const { toast } = useToast();
 
       const deleteCallback = () => {
         // deleteSprint.mutate(
