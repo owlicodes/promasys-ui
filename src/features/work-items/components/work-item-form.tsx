@@ -30,6 +30,7 @@ import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useCreateWorkItem } from "../apis/use-create-work-item";
+import { useUpdateWorkItem } from "../apis/use-update-work-item";
 import {
   TWorkItem,
   TWorkItemFormSchema,
@@ -57,6 +58,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   }>();
   const projectUsers = useProjectUsers(projectId);
   const createWorkItem = useCreateWorkItem(projectId);
+  const updateWorkItem = useUpdateWorkItem(projectId);
   const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
@@ -89,20 +91,19 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           }
         );
       } else {
-        // updateProject.mutate(
-        //   {
-        //     projectId: data.id,
-        //     data: {
-        //       ...values,
-        //       organizationId: data.organizationId,
-        //       ownerId: data.ownerId,
-        //     },
-        //   },
-        //   {
-        //     onSuccess: () => showSuccess("Project updated."),
-        //     onError: (error) => showError(error.message),
-        //   }
-        // );
+        updateWorkItem.mutate(
+          {
+            workItemId: data.id,
+            data: {
+              ...values,
+              projectId,
+            },
+          },
+          {
+            onSuccess: () => showSuccess("Work item updated."),
+            onError: (error) => showError(error.message),
+          }
+        );
       }
     }
   };
@@ -224,7 +225,9 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             </FormItem>
           )}
         />
-        <SubmitButton isPending={createWorkItem.isPending}>
+        <SubmitButton
+          isPending={createWorkItem.isPending || updateWorkItem.isPending}
+        >
           {data ? "Update" : "Create"}
         </SubmitButton>
       </form>

@@ -4,7 +4,7 @@ import { Route } from "next";
 import Link from "next/link";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit2, MoreHorizontal, Trash } from "lucide-react";
+import { MoreHorizontal, Trash } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -106,10 +106,6 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
         // );
       };
 
-      const showEditSprintForm = () => {
-        console.log("navigate to edit work item form");
-      };
-
       const showDeleteSprintConfirmation = () => {
         setDialogConfig({
           open: true,
@@ -129,15 +125,6 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={showEditSprintForm}
-              className="cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <Edit2 className="h-4 w-4" />
-                <span>Edit</span>
-              </div>
-            </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={showDeleteSprintConfirmation}

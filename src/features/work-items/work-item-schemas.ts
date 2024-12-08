@@ -15,6 +15,10 @@ export type TWorkItem = {
 };
 
 export type TCreateWorkItem = Omit<TWorkItem, "id" | "createdAt">;
+export type TUpdateWorkItem = Omit<
+  TWorkItem,
+  "id" | "assignedToUserId" | "createdByUserId" | "createdAt"
+>;
 
 export const workItemFormSchema = z.object({
   title: z

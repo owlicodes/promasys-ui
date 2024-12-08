@@ -22,7 +22,7 @@ export const WorkItemDetails = () => {
 
   return (
     <div className="space-y-6">
-      <CreateWorkItemBreadcrumb />
+      <CreateWorkItemBreadcrumb isUpdate />
       <Card>
         <CardContent>
           <WorkItemForm data={workItem.data} />
