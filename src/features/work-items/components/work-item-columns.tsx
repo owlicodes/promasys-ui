@@ -1,5 +1,8 @@
 "use client";
 
+import { Route } from "next";
+import Link from "next/link";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit2, MoreHorizontal, Trash } from "lucide-react";
 
@@ -15,6 +18,7 @@ import {
 import { DeleteContent } from "@/features/common/components/delete-content";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { WORK_ITEM_STATUS_MAP, WORK_ITEM_TYPES_MAP } from "../utils";
 import { TWorkItem } from "../work-item-schemas";
@@ -24,6 +28,23 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ row }) => {
+      const { selectedOrganization } = useSelectedOrganizationStore();
+      const rootUrl = `/${selectedOrganization?.name}/${row.original.projectId}`;
+      const withSprintUrl = row.original.sprintId
+        ? `${rootUrl}/${row.original.sprintId}`
+        : rootUrl;
+      const finalUrl = `${withSprintUrl}/work-items/${row.original.id}`;
+
+      return (
+        <Link
+          href={finalUrl as Route}
+          className="font-semibold text-brand underline"
+        >
+          {row.original.title}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "type",
