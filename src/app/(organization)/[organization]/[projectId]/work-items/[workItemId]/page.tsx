@@ -1,16 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { CreateWorkItemBreadcrumb } from "@/features/work-items/components/create-work-item-breadcrumb";
-import { WorkItemForm } from "@/features/work-items/components/work-item-form";
+import { WorkItemDetails } from "@/features/work-items/components/work-item-details";
 
 export default function ProjectWorkItemDetails() {
-  return (
-    <div className="space-y-6">
-      <CreateWorkItemBreadcrumb />
-      <Card>
-        <CardContent>
-          <WorkItemForm />
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <WorkItemDetails />;
 }

@@ -27,4 +27,11 @@ export const projectQueryKeys = {
     projectId,
     "work-items",
   ],
+  workItemDetailsByProjectIdAndWorkItemId: ({
+    projectId,
+    workItemId,
+  }: {
+    projectId: string | undefined;
+    workItemId: string | undefined;
+  }) => [...projectQueryKeys.root, projectId, "work-items", workItemId],
 };
