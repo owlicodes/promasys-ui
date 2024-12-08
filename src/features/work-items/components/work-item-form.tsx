@@ -84,7 +84,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             createdByUserId: session.data.user.id,
           },
           {
-            onSuccess: () => showSuccess("Wokr item created."),
+            onSuccess: () => showSuccess("Work item created."),
             onError: (error) => showError(error.message),
           }
         );
