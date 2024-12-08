@@ -43,7 +43,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
       title: data?.title || "",
       description: data?.description || "",
       type: data?.type || "NONE",
-      storyPoint: data?.storyPoint || 0,
+      storyPoint: data?.storyPoint ? data.storyPoint : 0,
       status: data?.status || "PENDING",
       assignedToUserId: data?.assignedToUserId || "",
     },
@@ -56,7 +56,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
     sprintId: string;
   }>();
   const projectUsers = useProjectUsers(projectId);
-  const createWorkItem = useCreateWorkItem();
+  const createWorkItem = useCreateWorkItem(projectId);
   const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>
@@ -84,7 +84,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             createdByUserId: session.data.user.id,
           },
           {
-            onSuccess: () => showSuccess("Project created."),
+            onSuccess: () => showSuccess("Wokr item created."),
             onError: (error) => showError(error.message),
           }
         );

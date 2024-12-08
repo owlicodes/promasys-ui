@@ -22,17 +22,17 @@ export const workItemFormSchema = z.object({
     .trim()
     .min(1, { message: "Title is required." })
     .max(100, { message: "Title is too long." })
-    .regex(/^[a-zA-Z0-9\s-]+$/, {
+    .regex(/^[a-zA-Z0-9\s-\.,]+$/, {
       message: "Title can only contain letters, numbers, spaces, and hyphens.",
     }),
   description: z.string().min(1, { message: "Description is required." }),
   type: z.enum(["NONE", "STORY", "TASK", "BUG"], {
     message: "Type is required.",
   }),
-  storyPoint: z
-    .string()
-    .transform((val) => (val === "" ? undefined : Number(val)))
-    .optional(),
+  storyPoint: z.preprocess(
+    (val) => (val === "" ? undefined : Number(val)),
+    z.number().optional()
+  ),
   status: z.enum(["PENDING", "IN_PROGRESS", "DONE", "CLOSED"], {
     message: "Status is required.",
   }),

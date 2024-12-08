@@ -4,7 +4,7 @@ import { WorkItemForm } from "@/features/work-items/components/work-item-form";
 
 export default function CreateWorkItem() {
   return (
-    <div className="space-y-6">
+    <div className="mb-6 space-y-6">
       <CreateWorkItemBreadcrumb />
       <Card>
         <CardHeader>
