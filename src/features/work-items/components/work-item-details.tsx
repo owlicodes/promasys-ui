@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/features/common/components/spinner";
 import { useProjectWorkItemDetails } from "@/features/projects/apis/use-project-work-item-details";
 
 import { CreateWorkItemBreadcrumb } from "./create-work-item-breadcrumb";
@@ -14,6 +15,10 @@ export const WorkItemDetails = () => {
     workItemId: string;
   }>();
   const workItem = useProjectWorkItemDetails({ projectId, workItemId });
+
+  if (workItem.isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="space-y-6">
