@@ -80,6 +80,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           {
             ...values,
             projectId,
+            sprintId,
             createdByUserId: session.data.user.id,
           },
           {
@@ -201,7 +202,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
         />
         <FormField
           control={form.control}
-          name="status"
+          name="assignedToUserId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Assigned To</FormLabel>

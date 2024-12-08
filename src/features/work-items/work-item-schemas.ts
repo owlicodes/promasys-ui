@@ -29,7 +29,10 @@ export const workItemFormSchema = z.object({
   type: z.enum(["NONE", "STORY", "TASK", "BUG"], {
     message: "Type is required.",
   }),
-  storyPoint: z.number().optional(),
+  storyPoint: z
+    .string()
+    .transform((val) => (val === "" ? undefined : Number(val)))
+    .optional(),
   status: z.enum(["PENDING", "IN_PROGRESS", "DONE", "CLOSED"], {
     message: "Status is required.",
   }),
