@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/features/common/components/submit-button";
+import { useProjectSprints } from "@/features/projects/apis/use-project-sprints";
 import { useProjectStories } from "@/features/projects/apis/use-project-stories";
 import { useProjectUsers } from "@/features/projects/apis/use-project-users";
 import { useToast } from "@/hooks/use-toast";
@@ -39,6 +40,10 @@ import {
 } from "../work-item-schemas";
 
 export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
+  const { projectId, sprintId } = useParams<{
+    projectId: string;
+    sprintId: string;
+  }>();
   const form = useForm<TWorkItemFormSchema>({
     resolver: zodResolver(workItemFormSchema),
     defaultValues: {
@@ -49,17 +54,15 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
       status: data?.status || "PENDING",
       assignedToUserId: data?.assignedToUserId || "",
       parentWorkItemId: data?.parentWorkItemId || "",
+      sprintId: data?.sprintId || sprintId,
     },
   });
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();
-  const { projectId, sprintId } = useParams<{
-    projectId: string;
-    sprintId: string;
-  }>();
   const projectUsers = useProjectUsers(projectId);
   const projectStories = useProjectStories(projectId);
+  const projectSprints = useProjectSprints(projectId);
   const createWorkItem = useCreateWorkItem(projectId, sprintId);
   const updateWorkItem = useUpdateWorkItem(projectId, sprintId);
   const { selectedOrganization } = useSelectedOrganizationStore();
@@ -85,7 +88,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           {
             ...values,
             projectId,
-            sprintId,
+            sprintId: values.sprintId || sprintId,
             createdByUserId: session.data.user.id,
           },
           {
@@ -141,6 +144,30 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sprintId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sprint</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select the sprint the work item belongs to" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {projectSprints.data?.map((projectSprint) => (
+                    <SelectItem key={projectSprint.id} value={projectSprint.id}>
+                      {projectSprint.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

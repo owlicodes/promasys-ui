@@ -44,5 +44,6 @@ export const workItemFormSchema = z.object({
   }),
   assignedToUserId: z.string().optional(),
   parentWorkItemId: z.string().optional(),
+  sprintId: z.string().optional(),
 });
 export type TWorkItemFormSchema = z.infer<typeof workItemFormSchema>;
