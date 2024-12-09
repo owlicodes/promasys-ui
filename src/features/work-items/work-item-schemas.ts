@@ -11,6 +11,7 @@ export type TWorkItem = {
   assignedToUserId?: string;
   projectId: string;
   sprintId?: string;
+  parentWorkItemId?: string;
   createdAt: string;
 };
 
@@ -26,7 +27,7 @@ export const workItemFormSchema = z.object({
     .trim()
     .min(1, { message: "Title is required." })
     .max(100, { message: "Title is too long." })
-    .regex(/^[a-zA-Z0-9\s-\.,]+$/, {
+    .regex(/^[a-zA-Z0-9\s-\.,'"]+$/, {
       message: "Title can only contain letters, numbers, spaces, and hyphens.",
     }),
   description: z.string().min(1, { message: "Description is required." }),
@@ -41,5 +42,6 @@ export const workItemFormSchema = z.object({
     message: "Status is required.",
   }),
   assignedToUserId: z.string().optional(),
+  parentWorkItemId: z.string().optional(),
 });
 export type TWorkItemFormSchema = z.infer<typeof workItemFormSchema>;

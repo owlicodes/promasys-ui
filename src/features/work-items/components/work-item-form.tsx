@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/features/common/components/submit-button";
+import { useProjectStories } from "@/features/projects/apis/use-project-stories";
 import { useProjectUsers } from "@/features/projects/apis/use-project-users";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
@@ -47,6 +48,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
       storyPoint: data?.storyPoint ? data.storyPoint : 0,
       status: data?.status || "PENDING",
       assignedToUserId: data?.assignedToUserId || "",
+      parentWorkItemId: data?.parentWorkItemId || "",
     },
   });
   const session = useSession();
@@ -57,6 +59,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
     sprintId: string;
   }>();
   const projectUsers = useProjectUsers(projectId);
+  const projectStories = useProjectStories(projectId);
   const createWorkItem = useCreateWorkItem(projectId);
   const updateWorkItem = useUpdateWorkItem(projectId);
   const { selectedOrganization } = useSelectedOrganizationStore();
@@ -165,6 +168,36 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             </FormItem>
           )}
         />
+        {(form.getValues("type") === "BUG" ||
+          form.getValues("type") === "TASK") && (
+          <FormField
+            control={form.control}
+            name="parentWorkItemId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Parent Work Item</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select the parent work item if applicable" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {projectStories.data?.map((projectStory) => (
+                      <SelectItem key={projectStory.id} value={projectStory.id}>
+                        {projectStory.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="storyPoint"

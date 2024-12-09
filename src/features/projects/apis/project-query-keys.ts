@@ -22,6 +22,11 @@ export const projectQueryKeys = {
     projectId,
     "users",
   ],
+  projectStories: (projectId: string | undefined) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "stories",
+  ],
   workItemsByProjectId: (projectId: string | undefined) => [
     ...projectQueryKeys.root,
     projectId,
