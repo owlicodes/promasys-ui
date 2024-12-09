@@ -76,6 +76,15 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   {
     accessorKey: "storyPoint",
     header: "Story Point",
+    cell: ({ row }) => {
+      const workItem = row.original;
+
+      if (workItem.type !== "STORY" && workItem.type !== "BUG") {
+        return null;
+      }
+
+      return <span>{workItem.storyPoint}</span>;
+    },
   },
   {
     id: "actions",
