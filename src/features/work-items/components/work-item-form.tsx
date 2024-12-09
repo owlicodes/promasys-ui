@@ -66,6 +66,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   const createWorkItem = useCreateWorkItem(projectId, sprintId);
   const updateWorkItem = useUpdateWorkItem(projectId, sprintId);
   const { selectedOrganization } = useSelectedOrganizationStore();
+  const type = form.watch("type");
 
   const showError = (message: string) =>
     toast({
@@ -82,14 +83,19 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   };
 
   const onSubmit = (values: TWorkItemFormSchema) => {
+    console.log({ values });
+
     if (session.data?.user && selectedOrganization) {
       if (!data) {
         createWorkItem.mutate(
           {
             ...values,
             projectId,
-            sprintId: values.sprintId || sprintId,
             createdByUserId: session.data.user.id,
+            storyPoint:
+              values.type === "STORY" || values.type === "BUG"
+                ? values.storyPoint
+                : 0,
           },
           {
             onSuccess: () => showSuccess("Work item created."),
@@ -103,6 +109,10 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             data: {
               ...values,
               projectId,
+              storyPoint:
+                values.type === "STORY" || values.type === "BUG"
+                  ? values.storyPoint
+                  : 0,
             },
           },
           {
@@ -195,8 +205,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             </FormItem>
           )}
         />
-        {(form.getValues("type") === "BUG" ||
-          form.getValues("type") === "TASK") && (
+        {(type === "BUG" || type === "TASK") && (
           <FormField
             control={form.control}
             name="parentWorkItemId"
@@ -225,19 +234,21 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             )}
           />
         )}
-        <FormField
-          control={form.control}
-          name="storyPoint"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Story Point</FormLabel>
-              <FormControl>
-                <Input autoComplete="off" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {(type === "STORY" || type === "BUG") && (
+          <FormField
+            control={form.control}
+            name="storyPoint"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Story Point</FormLabel>
+                <FormControl>
+                  <Input autoComplete="off" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="status"
