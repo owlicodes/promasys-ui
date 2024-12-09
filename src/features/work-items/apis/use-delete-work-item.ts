@@ -3,27 +3,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { projectQueryKeys } from "@/features/projects/apis/project-query-keys";
 import { api } from "@/lib/api-client";
 
-import { TUpdateWorkItem, TWorkItem } from "../work-item-schemas";
+import { TWorkItem } from "../work-item-schemas";
 
-const updateWorkItem = ({
-  data,
+const deleteWorkItem = ({
+  projectId,
   workItemId,
 }: {
-  data: TUpdateWorkItem;
+  projectId: string;
   workItemId: string;
 }): Promise<TWorkItem> =>
   api
-    .patch(`/projects/${data.projectId}/work-items/${workItemId}`, data)
+    .delete(`/projects/${projectId}/work-items/${workItemId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw error.response.data;
     });
 
-export const useUpdateWorkItem = (projectId: string | undefined) => {
+export const useDeleteWorkItem = (projectId: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateWorkItem,
+    mutationFn: deleteWorkItem,
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.workItemsByProjectId(projectId),

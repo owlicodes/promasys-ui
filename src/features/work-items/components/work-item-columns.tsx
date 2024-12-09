@@ -16,9 +16,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteContent } from "@/features/common/components/delete-content";
+import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
+import { useDeleteWorkItem } from "../apis/use-delete-work-item";
 import { WORK_ITEM_STATUS_MAP, WORK_ITEM_TYPES_MAP } from "../utils";
 import { TWorkItem } from "../work-item-schemas";
 
@@ -80,30 +82,31 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
     cell: ({ row }) => {
       const workItem = row.original;
       const { setDialogConfig } = useDialogConfigStore();
-      // const { toast } = useToast();
+      const deleteWorkItem = useDeleteWorkItem(workItem.projectId);
+      const { toast } = useToast();
 
       const deleteCallback = () => {
-        // deleteSprint.mutate(
-        //   {
-        //     projectId: row.original.projectId,
-        //     sprintId: row.original.id,
-        //   },
-        //   {
-        //     onSuccess: () => {
-        //       toast({
-        //         title: "Sprint deleted.",
-        //       });
-        //       setDialogConfig(undefined);
-        //     },
-        //     onError: (error) => {
-        //       toast({
-        //         title: error.message,
-        //         variant: "destructive",
-        //       });
-        //       setDialogConfig(undefined);
-        //     },
-        //   }
-        // );
+        deleteWorkItem.mutate(
+          {
+            projectId: workItem.projectId,
+            workItemId: workItem.id,
+          },
+          {
+            onSuccess: () => {
+              toast({
+                title: "Work item deleted.",
+              });
+              setDialogConfig(undefined);
+            },
+            onError: (error) => {
+              toast({
+                title: error.message,
+                variant: "destructive",
+              });
+              setDialogConfig(undefined);
+            },
+          }
+        );
       };
 
       const showDeleteSprintConfirmation = () => {
