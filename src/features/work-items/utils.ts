@@ -9,7 +9,7 @@ export const WORK_ITEM_TYPES_MAP = {
   },
   TASK: {
     label: "Task",
-    color: "bg-green-500",
+    color: "bg-blue-500",
   },
   BUG: {
     label: "Bug",
