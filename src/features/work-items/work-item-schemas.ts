@@ -13,6 +13,7 @@ export type TWorkItem = {
   sprintId?: string;
   parentWorkItemId?: string;
   createdAt: string;
+  childWorkItems?: TWorkItem[];
 };
 
 export type TCreateWorkItem = Omit<TWorkItem, "id" | "createdAt">;

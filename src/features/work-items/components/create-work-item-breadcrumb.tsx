@@ -16,9 +16,9 @@ import { useSprintDetails } from "@/features/sprints/apis/use-sprint-details";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 export const CreateWorkItemBreadcrumb = ({
-  isUpdate = false,
+  customTitle,
 }: {
-  isUpdate?: boolean;
+  customTitle?: string;
 }) => {
   const { selectedOrganization } = useSelectedOrganizationStore();
   const { projectId, sprintId } = useParams<{
@@ -63,7 +63,7 @@ export const CreateWorkItemBreadcrumb = ({
         )}
         <BreadcrumbItem>
           <BreadcrumbPage>
-            {isUpdate ? "Update" : "Create"} Work Item
+            {customTitle ? customTitle : "Create Work Item"}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
