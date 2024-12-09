@@ -60,8 +60,8 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   }>();
   const projectUsers = useProjectUsers(projectId);
   const projectStories = useProjectStories(projectId);
-  const createWorkItem = useCreateWorkItem(projectId);
-  const updateWorkItem = useUpdateWorkItem(projectId);
+  const createWorkItem = useCreateWorkItem(projectId, sprintId);
+  const updateWorkItem = useUpdateWorkItem(projectId, sprintId);
   const { selectedOrganization } = useSelectedOrganizationStore();
 
   const showError = (message: string) =>

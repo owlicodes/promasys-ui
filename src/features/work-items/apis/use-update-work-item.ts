@@ -19,15 +19,22 @@ const updateWorkItem = ({
       throw error.response.data;
     });
 
-export const useUpdateWorkItem = (projectId: string | undefined) => {
+export const useUpdateWorkItem = (
+  projectId: string | undefined,
+  sprintId: string | undefined
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: updateWorkItem,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.workItemsByProjectId(projectId),
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
+      });
+    },
     onError: (error: { message: string }) => error,
   });
 };

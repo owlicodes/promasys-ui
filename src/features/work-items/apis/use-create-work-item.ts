@@ -13,15 +13,22 @@ const createWorkItem = (data: TCreateWorkItem): Promise<TWorkItem> =>
       throw error.response.data;
     });
 
-export const useCreateWorkItem = (projectId: string | undefined) => {
+export const useCreateWorkItem = (
+  projectId: string | undefined,
+  sprintId: string | undefined
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createWorkItem,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.workItemsByProjectId(projectId),
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
+      });
+    },
     onError: (error: { message: string }) => error,
   });
 };

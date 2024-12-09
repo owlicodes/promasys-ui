@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { TWorkItem } from "../work-items/work-item-schemas";
+
 export type TSprint = {
   id: string;
   name: string;
@@ -7,6 +9,7 @@ export type TSprint = {
   endDate: string;
   status: "PLANNED" | "STARTED" | "CLOSED";
   projectId: string;
+  workItems?: TWorkItem[];
 };
 
 export type TCreateSprint = Omit<TSprint, "id">;

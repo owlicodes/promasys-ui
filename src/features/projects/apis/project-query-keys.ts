@@ -11,12 +11,10 @@ export const projectQueryKeys = {
     projectId,
     "sprints",
   ],
-  projectSprintById: (projectId: string, sprintId: string) => [
-    ...projectQueryKeys.root,
-    projectId,
-    "sprints",
-    sprintId,
-  ],
+  projectSprintById: (
+    projectId: string | undefined,
+    sprintId: string | undefined
+  ) => [...projectQueryKeys.root, projectId, "sprints", sprintId],
   projectUsers: (projectId: string | undefined) => [
     ...projectQueryKeys.root,
     projectId,
