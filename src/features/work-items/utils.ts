@@ -1,30 +1,30 @@
 export const WORK_ITEM_TYPES_MAP = {
   NONE: {
     label: "None",
-    color: "bg-gray-500",
+    color: "bg-gray-400",
   },
   STORY: {
     label: "Story",
-    color: "bg-brand",
+    color: "bg-indigo-500",
   },
   TASK: {
     label: "Task",
-    color: "bg-blue-500",
+    color: "bg-blue-400",
   },
   BUG: {
     label: "Bug",
-    color: "bg-red-500",
+    color: "bg-red-600",
   },
 };
 
 export const WORK_ITEM_STATUS_MAP = {
   PENDING: {
     label: "Pending",
-    color: "bg-gray-500",
+    color: "bg-gray-400",
   },
   IN_PROGRESS: {
     label: "In Progress",
-    color: "bg-orange-500",
+    color: "bg-yellow-500",
   },
   DONE: {
     label: "Done",
@@ -32,6 +32,6 @@ export const WORK_ITEM_STATUS_MAP = {
   },
   CLOSED: {
     label: "Closed",
-    color: "bg-brand",
+    color: "bg-teal-500",
   },
 };

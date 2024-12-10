@@ -19,7 +19,7 @@ export const CreateNewWorkItem = () => {
   const href = `${initialHref}/${sprintId ? `${sprintId}/create-work-item` : "create-work-item"}`;
 
   return (
-    <Button className="mt-4">
+    <Button variant="outline" className="mt-4">
       <Link href={href as Route} className="flex items-center gap-2">
         <PlusCircle />
         <span>Create New Work Item</span>
