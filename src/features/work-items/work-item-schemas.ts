@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { TSprint } from "../sprints/sprint-schema";
+
 export type TWorkItem = {
   id: string;
   title: string;
@@ -14,6 +16,7 @@ export type TWorkItem = {
   parentWorkItemId?: string;
   createdAt: string;
   childWorkItems?: TWorkItem[];
+  sprint: TSprint;
 };
 
 export type TCreateWorkItem = Omit<TWorkItem, "id" | "createdAt">;

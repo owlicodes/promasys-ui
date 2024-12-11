@@ -48,6 +48,10 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
     },
   },
   {
+    accessorKey: "sprint.name",
+    header: "Sprint",
+  },
+  {
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
