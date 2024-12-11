@@ -37,7 +37,13 @@ export const OrganizationSwitcher = () => {
 
   useEffect(() => {
     setSelectedOrganization(selectedOrganization);
-  }, [setSelectedOrganization, selectedOrganization]);
+    if (
+      organization === "default" &&
+      selectedOrganization &&
+      selectedOrganization?.name !== "default"
+    )
+      router.push(`/${selectedOrganization.name}` as Route);
+  }, [setSelectedOrganization, selectedOrganization, organization, router]);
 
   const onSwitchHandler = (name: string) => router.push(`/${name}` as Route);
 
