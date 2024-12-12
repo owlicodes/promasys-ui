@@ -50,6 +50,13 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   {
     accessorKey: "sprint.name",
     header: "Sprint",
+    cell: ({ row }) => {
+      const workItem = row.original;
+
+      if (!workItem.sprint?.name) return null;
+
+      return <span>{workItem.sprint.name}</span>;
+    },
   },
   {
     accessorKey: "type",
