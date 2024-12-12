@@ -83,8 +83,6 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   };
 
   const onSubmit = (values: TWorkItemFormSchema) => {
-    console.log({ values });
-
     if (session.data?.user && selectedOrganization) {
       if (!data) {
         createWorkItem.mutate(

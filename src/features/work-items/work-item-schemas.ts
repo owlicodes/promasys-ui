@@ -16,7 +16,7 @@ export type TWorkItem = {
   parentWorkItemId?: string;
   createdAt: string;
   childWorkItems?: TWorkItem[];
-  sprint: TSprint;
+  sprint?: TSprint;
 };
 
 export type TCreateWorkItem = Omit<TWorkItem, "id" | "createdAt">;
