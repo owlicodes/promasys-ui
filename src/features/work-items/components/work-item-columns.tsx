@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteContent } from "@/features/common/components/delete-content";
+import { SortableTableHeader } from "@/features/common/components/sortable-table-header";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
@@ -28,7 +29,9 @@ import { TWorkItem } from "../work-item-schemas";
 export const workItemColumns: ColumnDef<TWorkItem>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: ({ column }) => {
+      return <SortableTableHeader column={column} title="Title" />;
+    },
     cell: ({ row }) => {
       const { selectedOrganization } = useSelectedOrganizationStore();
       const rootUrl = `/${selectedOrganization?.name}/${row.original.projectId}`;
@@ -49,7 +52,9 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   },
   {
     accessorKey: "sprint.name",
-    header: "Sprint",
+    header: ({ column }) => {
+      return <SortableTableHeader column={column} title="Sprint" />;
+    },
     cell: ({ row }) => {
       const workItem = row.original;
 
@@ -60,7 +65,9 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   },
   {
     accessorKey: "type",
-    header: "Type",
+    header: ({ column }) => {
+      return <SortableTableHeader column={column} title="Type" />;
+    },
     cell: ({ row }) => {
       const workItem = row.original;
 
@@ -73,7 +80,9 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return <SortableTableHeader column={column} title="Status" />;
+    },
     cell: ({ row }) => {
       const workItem = row.original;
 
@@ -86,7 +95,9 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
   },
   {
     accessorKey: "storyPoint",
-    header: "Story Point",
+    header: ({ column }) => {
+      return <SortableTableHeader column={column} title="Story Point" />;
+    },
     cell: ({ row }) => {
       const workItem = row.original;
 
