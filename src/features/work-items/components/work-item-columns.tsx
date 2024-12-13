@@ -113,7 +113,10 @@ export const workItemColumns: ColumnDef<TWorkItem>[] = [
     cell: ({ row }) => {
       const workItem = row.original;
       const { setDialogConfig } = useDialogConfigStore();
-      const deleteWorkItem = useDeleteWorkItem(workItem.projectId);
+      const deleteWorkItem = useDeleteWorkItem(
+        workItem.projectId,
+        workItem.sprintId
+      );
       const { toast } = useToast();
 
       const deleteCallback = () => {

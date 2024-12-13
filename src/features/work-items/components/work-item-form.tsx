@@ -96,7 +96,14 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
                 : 0,
           },
           {
-            onSuccess: () => showSuccess("Work item created."),
+            onSuccess: () => {
+              showSuccess("Work item created.");
+              form.reset();
+
+              if (!sprintId) {
+                form.setValue("sprintId", "");
+              }
+            },
             onError: (error) => showError(error.message),
           }
         );
@@ -162,7 +169,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sprint</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select the sprint the work item belongs to" />
@@ -186,7 +193,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select the work item type" />
@@ -253,7 +260,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Status</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select the work item status" />
@@ -276,7 +283,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Assigned To</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select the user to assign the task" />

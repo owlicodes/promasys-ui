@@ -19,15 +19,22 @@ const deleteWorkItem = ({
       throw error.response.data;
     });
 
-export const useDeleteWorkItem = (projectId: string | undefined) => {
+export const useDeleteWorkItem = (
+  projectId: string | undefined,
+  sprintId: string | undefined
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteWorkItem,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.workItemsByProjectId(projectId),
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
+      });
+    },
     onError: (error: { message: string }) => error,
   });
 };
