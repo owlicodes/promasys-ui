@@ -28,7 +28,9 @@ export const HeroSection = async () => {
           </div>
           <div className="space-x-4">
             {!session?.user ? (
-              <GoogleSignInButton>Start Exploring!</GoogleSignInButton>
+              <GoogleSignInButton variant="outline" className="text-brand">
+                Start Exploring!
+              </GoogleSignInButton>
             ) : (
               <Link href="/default">
                 <Button size="lg" variant="outline" className="text-brand">
