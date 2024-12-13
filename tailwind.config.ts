@@ -51,7 +51,8 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
-        brand: "#6b21a8",
+        // brand: "#0c4a6e",
+        brand: "#064e3b",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -10,7 +10,7 @@ export const HeroSection = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <section className="w-full bg-gradient-to-r from-brand via-purple-500 to-pink-200 py-12 md:py-24 lg:py-32 xl:py-48">
+    <section className="w-full bg-brand py-12 text-white md:py-24 lg:py-32 xl:py-48">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
@@ -31,7 +31,9 @@ export const HeroSection = async () => {
               <GoogleSignInButton>Start Exploring!</GoogleSignInButton>
             ) : (
               <Link href="/default">
-                <Button size="lg">Get Started</Button>
+                <Button size="lg" variant="outline" className="text-brand">
+                  Get Started
+                </Button>
               </Link>
             )}
           </div>

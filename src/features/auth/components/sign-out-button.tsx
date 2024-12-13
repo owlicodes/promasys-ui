@@ -11,5 +11,9 @@ export const SignOutButton = () => {
       redirect: true,
     });
 
-  return <Button onClick={handleSignOut}>Sign Out</Button>;
+  return (
+    <Button onClick={handleSignOut} className="w-full" variant="link">
+      Sign Out
+    </Button>
+  );
 };
