@@ -1,5 +1,5 @@
 import { Column } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,7 +18,10 @@ export const SortableTableHeader = <T,>({
     >
       <div className="flex w-full items-center">
         <span>{title}</span>
-        <ArrowUpDown className="ml-2 h-4 w-4" />
+        {column.getIsSorted() === "asc" && <ArrowUp className="ml-2 h-4 w-4" />}
+        {column.getIsSorted() === "desc" && (
+          <ArrowDown className="ml-2 h-4 w-4" />
+        )}
       </div>
     </Button>
   );
