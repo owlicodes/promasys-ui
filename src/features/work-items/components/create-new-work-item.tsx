@@ -7,9 +7,14 @@ import { useParams } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { ButtonVariants } from "@/features/common/types";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
-export const CreateNewWorkItem = () => {
+export const CreateNewWorkItem = ({
+  variant = "default",
+}: {
+  variant?: ButtonVariants;
+}) => {
   const { selectedOrganization } = useSelectedOrganizationStore();
   const { projectId, sprintId } = useParams<{
     projectId: string;
@@ -19,7 +24,7 @@ export const CreateNewWorkItem = () => {
   const href = `${initialHref}/${sprintId ? `${sprintId}/create-work-item` : "create-work-item"}`;
 
   return (
-    <Button variant="outline" className="mt-4 p-0">
+    <Button variant={variant} className="mt-4 p-0">
       <Link href={href as Route} className="flex h-9 items-center gap-2 px-4">
         <PlusCircle />
         <span>Create New Work Item</span>

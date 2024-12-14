@@ -57,7 +57,7 @@ export const ProjectDetails = () => {
         </div>
         <div className="space-x-4">
           <CreateNewSprintButton />
-          <CreateNewWorkItem />
+          <CreateNewWorkItem variant="outline" />
         </div>
       </div>
 

@@ -5,19 +5,12 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
+import { ButtonVariants } from "@/features/common/types";
 
 type GoogleSignInButtonProps = {
   children: React.ReactNode;
   className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link"
-    | null
-    | undefined;
+  variant?: ButtonVariants;
 };
 
 export const GoogleSignInButton = ({
