@@ -19,6 +19,7 @@ import { ProjectForm } from "@/features/projects/components/project-form";
 import { TProject } from "@/features/projects/project-schemas";
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useDeleteProject } from "../apis/use-delete-project";
 
@@ -28,9 +29,11 @@ export const organizationProjectColumns: ColumnDef<TProject>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
+      const { selectedOrganization } = useSelectedOrganizationStore();
+
       return (
         <Link
-          href={`/${row.original.organization.name}/${row.original.id}`}
+          href={`/${selectedOrganization?.name}/${row.original.id}`}
           className="font-semibold text-brand underline"
         >
           {row.original.name}
