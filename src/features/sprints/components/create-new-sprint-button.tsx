@@ -19,7 +19,7 @@ export const CreateNewSprintButton = () => {
     });
 
   return (
-    <Button className="mt-4" onClick={showSprintForm}>
+    <Button className="mt-4 w-full md:w-fit" onClick={showSprintForm}>
       <PlusCircle />
       Create New Sprint
     </Button>

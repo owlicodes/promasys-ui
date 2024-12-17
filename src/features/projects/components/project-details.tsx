@@ -55,7 +55,7 @@ export const ProjectDetails = () => {
             <p>{format(project.data.createdAt, "PPP")}</p>
           </div>
         </div>
-        <div className="space-x-4">
+        <div className="md:flex md:gap-4">
           <CreateNewSprintButton />
           <CreateNewWorkItem variant="outline" />
         </div>
