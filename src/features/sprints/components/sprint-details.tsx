@@ -39,7 +39,7 @@ export const SprintDetails = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mb-6 space-y-6">
       <SprintDetailsBreadcrumb project={project.data} sprint={sprint.data} />
 
       <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
