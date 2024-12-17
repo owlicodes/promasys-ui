@@ -19,7 +19,7 @@ export const CreateOrganizationButton = () => {
     });
 
   return (
-    <Button onClick={showOrganizationForm}>
+    <Button onClick={showOrganizationForm} className="w-full md:w-fit">
       <PlusCircle />
       Create New Organization
     </Button>

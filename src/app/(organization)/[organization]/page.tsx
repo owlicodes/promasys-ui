@@ -4,7 +4,7 @@ import { OrganizationWelcomeCard } from "@/features/organizations/components/org
 
 export default function OrganizationHomePage() {
   return (
-    <div className="mt-4 space-y-6">
+    <div className="my-4 space-y-6">
       <OrganizationWelcomeCard />
       <CurrentOrganizationCard />
       <OrganizationProjectsList />

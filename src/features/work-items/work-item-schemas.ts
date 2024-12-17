@@ -30,7 +30,7 @@ export const workItemFormSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "Title is required." })
-    .max(100, { message: "Title is too long." })
+    .max(200, { message: "Title is too long." })
     .regex(/^[a-zA-Z0-9\s-\.,'"]+$/, {
       message: "Title can only contain letters, numbers, spaces, and hyphens.",
     }),

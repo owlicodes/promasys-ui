@@ -19,7 +19,11 @@ export const CreateProjectButton = () => {
     });
 
   return (
-    <Button onClick={showProjectForm} variant="outline">
+    <Button
+      onClick={showProjectForm}
+      variant="outline"
+      className="w-full md:w-fit"
+    >
       <PlusCircle />
       Create New Project
     </Button>

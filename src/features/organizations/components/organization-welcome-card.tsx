@@ -8,7 +8,7 @@ export const OrganizationWelcomeCard = () => {
         Welcome to <span className="text-brand">proyektibo</span>!
       </h1>
       <p>Let&apos;s get started by choosing 1 of the following actions.</p>
-      <div className="flex gap-4">
+      <div className="space-y-2 md:flex md:gap-4 md:space-y-0">
         <CreateOrganizationButton />
         <CreateProjectButton />
       </div>
