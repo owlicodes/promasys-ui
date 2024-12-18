@@ -4,13 +4,13 @@ import { useState } from "react";
 
 import { Spinner } from "@/features/common/components/spinner";
 import { OrganizationProjectsDropdown } from "@/features/organizations/components/organization-projects-dropdown";
-import { useProjectWorkItems } from "@/features/projects/apis/use-project-work-items";
+import { useProjectBacklogs } from "@/features/projects/apis/use-project-backlogs";
 
 import { WorkItemsList } from "./work-items-list";
 
 export const BacklogsList = () => {
   const [projectId, setProjectId] = useState<string>();
-  const workItems = useProjectWorkItems(projectId, true);
+  const workItems = useProjectBacklogs(projectId);
   const onValueChangeHandler = (projectId: string) => setProjectId(projectId);
 
   return (

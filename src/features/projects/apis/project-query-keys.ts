@@ -30,6 +30,12 @@ export const projectQueryKeys = {
     projectId,
     "work-items",
   ],
+  backlogsByProjectId: (projectId: string | undefined) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "work-items",
+    "backlogs",
+  ],
   workItemDetailsByProjectIdAndWorkItemId: ({
     projectId,
     workItemId,

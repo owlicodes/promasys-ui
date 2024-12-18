@@ -34,6 +34,9 @@ export const useDeleteWorkItem = (
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
       });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.backlogsByProjectId(projectId),
+      });
     },
     onError: (error: { message: string }) => error,
   });
