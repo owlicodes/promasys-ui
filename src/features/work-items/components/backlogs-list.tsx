@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Spinner } from "@/features/common/components/spinner";
 import { OrganizationProjectsDropdown } from "@/features/organizations/components/organization-projects-dropdown";
 import { useProjectWorkItems } from "@/features/projects/apis/use-project-work-items";
 
@@ -18,7 +19,11 @@ export const BacklogsList = () => {
         onValueChangeHandler={onValueChangeHandler}
       />
 
-      <WorkItemsList data={workItems.data || []} />
+      {workItems.isLoading ? (
+        <Spinner />
+      ) : (
+        <WorkItemsList data={workItems.data || []} />
+      )}
     </div>
   );
 };
