@@ -6,18 +6,29 @@ import { api } from "@/lib/api-client";
 
 import { projectQueryKeys } from "./project-query-keys";
 
-const findWorkItemsByProjectId = (projectId: string): Promise<TWorkItem[]> =>
-  api
-    .get(`/projects/${projectId}/work-items`)
+const findWorkItemsByProjectId = (
+  projectId: string | undefined,
+  backlogs: boolean
+): Promise<TWorkItem[]> => {
+  const url = !backlogs
+    ? `/projects/${projectId}/work-items`
+    : `/projects/${projectId}/work-items/backlogs`;
+
+  return api
+    .get(url)
     .then((response) => response.data)
     .catch((error) => {
       throw error.response.data;
     });
+};
 
-export const useProjectWorkItems = (projectId: string) =>
+export const useProjectWorkItems = (
+  projectId: string | undefined,
+  backlogs: boolean = false
+) =>
   useQuery({
     queryKey: projectQueryKeys.workItemsByProjectId(projectId),
-    queryFn: () => findWorkItemsByProjectId(projectId),
+    queryFn: () => findWorkItemsByProjectId(projectId, backlogs),
     enabled: Boolean(projectId),
     staleTime: STALE_TIME._30m,
   });

@@ -1,7 +1,7 @@
 import { Route } from "next";
 import Link from "next/link";
 
-import { ChevronUp, Home, User2 } from "lucide-react";
+import { Box, ChevronUp, Home, User2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 
 import {
@@ -31,6 +31,11 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Backlogs",
+    url: "/backlogs",
+    icon: Box,
   },
 ];
 
