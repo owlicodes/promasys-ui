@@ -94,6 +94,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
               values.type === "STORY" || values.type === "BUG"
                 ? values.storyPoint
                 : 0,
+            sprintId: !values.sprintId ? null : values.sprintId,
           },
           {
             onSuccess: () => {
@@ -177,9 +178,11 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem key="backlog" value="backlog">
-                    Move to backlogs
-                  </SelectItem>
+                  {data && (
+                    <SelectItem key="backlog" value="backlog">
+                      Move to backlogs
+                    </SelectItem>
+                  )}
                   {projectSprints.data?.map((projectSprint) => (
                     <SelectItem key={projectSprint.id} value={projectSprint.id}>
                       {projectSprint.name}
