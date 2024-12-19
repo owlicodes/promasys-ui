@@ -12,7 +12,7 @@ export type TWorkItem = {
   createdByUserId: string;
   assignedToUserId?: string;
   projectId: string;
-  sprintId?: string;
+  sprintId?: string | null;
   parentWorkItemId?: string;
   createdAt: string;
   childWorkItems?: TWorkItem[];
