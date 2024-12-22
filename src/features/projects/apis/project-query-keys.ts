@@ -13,7 +13,7 @@ export const projectQueryKeys = {
   ],
   projectSprintById: (
     projectId: string | undefined,
-    sprintId: string | undefined
+    sprintId: string | null | undefined
   ) => [...projectQueryKeys.root, projectId, "sprints", sprintId],
   projectUsers: (projectId: string | undefined) => [
     ...projectQueryKeys.root,

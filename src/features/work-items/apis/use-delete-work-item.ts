@@ -21,7 +21,7 @@ const deleteWorkItem = ({
 
 export const useDeleteWorkItem = (
   projectId: string | undefined,
-  sprintId: string | undefined
+  sprintId: string | null | undefined
 ) => {
   const queryClient = useQueryClient();
 
