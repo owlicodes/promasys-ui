@@ -63,7 +63,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   const projectUsers = useProjectUsers(projectId);
   const projectStories = useProjectStories(projectId);
   const projectSprints = useProjectSprints(projectId);
-  const createWorkItem = useCreateWorkItem(projectId, sprintId);
+  const createWorkItem = useCreateWorkItem();
   const updateWorkItem = useUpdateWorkItem(projectId, sprintId);
   const { selectedOrganization } = useSelectedOrganizationStore();
   const type = form.watch("type");
