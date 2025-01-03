@@ -11,11 +11,19 @@ export type TOrganization = {
   owner: Owner;
 };
 
+export type TInvite = {
+  id: string;
+  email: string;
+  organizationId: string;
+};
+
 export type TCreateOrganization = Omit<
   TOrganization,
   "id" | "createdAt" | "owner"
 >;
 export type TUpdateOrganization = TCreateOrganization;
+
+export type TCreateInvite = Omit<TInvite, "id">;
 
 export const organizationFormSchema = z.object({
   name: z
@@ -31,3 +39,10 @@ export const organizationFormSchema = z.object({
   }),
 });
 export type TOrganizationFormSchema = z.infer<typeof organizationFormSchema>;
+
+export const inviteUserFormSchema = z.object({
+  email: z.string().email({
+    message: "Invalid email.",
+  }),
+});
+export type TInviteUserFormSchema = z.infer<typeof inviteUserFormSchema>;

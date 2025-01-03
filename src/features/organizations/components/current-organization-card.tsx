@@ -14,6 +14,7 @@ import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useDeleteOrganization } from "../apis/use-delete-organization";
+import { InviteUserButton } from "./invite-user-button";
 import { OrganizationForm } from "./organization-form";
 
 export const CurrentOrganizationCard = () => {
@@ -102,6 +103,7 @@ export const CurrentOrganizationCard = () => {
           <Mail className="h-4 w-4" />
           <span>Owner: {selectedOrganization.owner.email}</span>
         </div>
+        <InviteUserButton />
       </CardContent>
     </Card>
   );
