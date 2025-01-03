@@ -1,8 +1,10 @@
+"use client";
+
 import { Route } from "next";
 import Link from "next/link";
 
 import { Box, ChevronUp, Home, User2 } from "lucide-react";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 
 import {
   DropdownMenu,
@@ -22,7 +24,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SignOutButton } from "@/features/auth/components/sign-out-button";
-import { authOptions } from "@/lib/next-auth-config";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { OrganizationSwitcher } from "../../organizations/components/organization-switcher";
 
@@ -39,8 +41,9 @@ const items = [
   },
 ];
 
-export const AppSidebar = async () => {
-  const session = await getServerSession(authOptions);
+export const AppSidebar = () => {
+  const session = useSession();
+  const { selectedOrganization } = useSelectedOrganizationStore();
 
   return (
     <Sidebar>
@@ -55,13 +58,25 @@ export const AppSidebar = async () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link
-                      href={item.url as Route}
-                      className="flex items-center"
-                    >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
+                    {item.title === "Backlogs" ? (
+                      <Link
+                        href={
+                          `/${selectedOrganization?.name}${item.url}` as Route
+                        }
+                        className="flex items-center"
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    ) : (
+                      <Link
+                        href={item.url as Route}
+                        className="flex items-center"
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -76,7 +91,7 @@ export const AppSidebar = async () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> {session?.user.email}
+                  <User2 /> {session.data?.user.email}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
