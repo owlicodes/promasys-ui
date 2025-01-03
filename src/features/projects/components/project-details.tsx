@@ -37,7 +37,7 @@ export const ProjectDetails = () => {
 
       <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-semibold">Project Information</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4 md:grid md:gap-4 md:space-y-0">
           <div>
             <p className="font-semibold">Project Name:</p>
             <p>{project.data.name}</p>

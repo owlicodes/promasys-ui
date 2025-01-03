@@ -44,7 +44,7 @@ export const SprintDetails = () => {
 
       <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-semibold">Sprint Information</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
           <div>
             <p className="font-semibold">Sprint Name:</p>
             <p>{sprint.data.name}</p>
