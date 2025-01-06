@@ -12,8 +12,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DeclineInviteContent } from "@/features/common/components/decline-invite-content";
 import { SortableTableHeader } from "@/features/common/components/sortable-table-header";
+import { useToast } from "@/hooks/use-toast";
+import useDialogConfigStore from "@/stores/dialog-store";
 
+import { useDeclineInvite } from "../apis/use-decline-invite";
 import { TInvite } from "../invite-schemas";
 import { INVITE_STATUS_MAP } from "../utils";
 
@@ -56,14 +60,10 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
     id: "actions",
     cell: ({ row }) => {
       const invite = row.original;
-      console.log({ invite });
 
-      //   const { setDialogConfig } = useDialogConfigStore();
-      //   const deleteWorkItem = useDeleteWorkItem(
-      //     workItem.projectId,
-      //     workItem.sprintId
-      //   );
-      //   const { toast } = useToast();
+      const { setDialogConfig } = useDialogConfigStore();
+      const declineInvite = useDeclineInvite(invite.email);
+      const { toast } = useToast();
 
       //   const deleteCallback = () => {
       // deleteWorkItem.mutate(
@@ -98,6 +98,33 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
         // });
       };
 
+      const declineCallback = () => {
+        declineInvite.mutate(invite.id, {
+          onSuccess: () => {
+            toast({
+              title: "Invite declined.",
+            });
+            setDialogConfig(undefined);
+          },
+          onError: (error) => {
+            toast({
+              title: error.message,
+              variant: "destructive",
+            });
+            setDialogConfig(undefined);
+          },
+        });
+      };
+
+      const showDeclineInviteConfirmation = () => {
+        setDialogConfig({
+          open: true,
+          title: "Decline Invite",
+          description: invite.organization.name,
+          content: <DeclineInviteContent declineCallback={declineCallback} />,
+        });
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -114,7 +141,10 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
                 <span>Accept</span>
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={showDeclineInviteConfirmation}
+            >
               <div className="flex items-center gap-2">
                 <X className="h-4 w-4" />
                 <span>Decline</span>
