@@ -1,8 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash } from "lucide-react";
+import { Check, MoreHorizontal, Trash, X } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +15,7 @@ import {
 import { SortableTableHeader } from "@/features/common/components/sortable-table-header";
 
 import { TInvite } from "../invite-schemas";
+import { INVITE_STATUS_MAP } from "../utils";
 
 /* eslint-disable react-hooks/rules-of-hooks */
 export const inviteColumns: ColumnDef<TInvite>[] = [
@@ -27,6 +29,15 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
     accessorKey: "status",
     header: ({ column }) => {
       return <SortableTableHeader column={column} title="Status" />;
+    },
+    cell: ({ row }) => {
+      const invite = row.original;
+
+      return (
+        <Badge className={INVITE_STATUS_MAP[invite.status].color}>
+          {INVITE_STATUS_MAP[invite.status].label}
+        </Badge>
+      );
     },
   },
   {
@@ -97,6 +108,18 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>Accept</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+              <div className="flex items-center gap-2">
+                <X className="h-4 w-4" />
+                <span>Decline</span>
+              </div>
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={showDeleteSprintConfirmation}
