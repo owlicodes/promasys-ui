@@ -24,7 +24,6 @@ export const InviteSection = async () => {
                 Just kidding, I don&apos;t have thousands of users, but maybe
                 join me in using proyektibo.
               </span>
-              .
             </p>
           </div>
           {!session?.user ? (
