@@ -3,7 +3,7 @@
 import { Route } from "next";
 import Link from "next/link";
 
-import { Box, ChevronUp, Home, User2 } from "lucide-react";
+import { Box, ChevronUp, Home, Mail, User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import {
@@ -39,6 +39,11 @@ const items = [
     url: "/backlogs",
     icon: Box,
   },
+  {
+    title: "Invites",
+    url: "/invites",
+    icon: Mail,
+  },
 ];
 
 export const AppSidebar = () => {
@@ -58,7 +63,7 @@ export const AppSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    {item.title === "Backlogs" ? (
+                    {item.title === "Backlogs" || item.title === "Invites" ? (
                       <Link
                         href={
                           `/${selectedOrganization?.name}${item.url}` as Route
