@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/features/common/components/data-table";
+import { Spinner } from "@/features/common/components/spinner";
 
 import { useUserInvites } from "../apis/use-user-invites";
 import { inviteColumns } from "./invite-columns";
@@ -19,7 +20,11 @@ export const InvitesList = () => {
           <CardTitle className="text-2xl font-bold">Invites</CardTitle>
         </CardHeader>
         <CardContent>
-          <DataTable columns={inviteColumns} data={invites.data || []} />
+          {invites.isLoading ? (
+            <Spinner />
+          ) : (
+            <DataTable columns={inviteColumns} data={invites.data || []} />
+          )}
         </CardContent>
       </Card>
     </div>
