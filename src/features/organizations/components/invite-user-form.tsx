@@ -32,7 +32,7 @@ export const InviteUserForm = () => {
     },
   });
   const session = useSession();
-  const createInvite = useCreateInvite();
+  const createInvite = useCreateInvite(session.data?.user.email);
   const { selectedOrganization } = useSelectedOrganizationStore();
   const { setDialogConfig } = useDialogConfigStore();
   const { toast } = useToast();

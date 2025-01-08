@@ -13,7 +13,7 @@ const deleteInvite = (inviteId: string): Promise<TInvite> =>
       throw error.response.data;
     });
 
-export const useDeleteInvite = (email: string) => {
+export const useDeleteInvite = (email: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({

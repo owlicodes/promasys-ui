@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, MoreHorizontal, Trash, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -62,10 +63,11 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
     id: "actions",
     cell: ({ row }) => {
       const invite = row.original;
+      const session = useSession();
 
       const { setDialogConfig } = useDialogConfigStore();
-      const declineInvite = useDeclineInvite(invite.email);
-      const deleteInvite = useDeleteInvite(invite.email);
+      const declineInvite = useDeclineInvite(session.data?.user.email);
+      const deleteInvite = useDeleteInvite(session.data?.user.email);
       const { toast } = useToast();
 
       const deleteCallback = () => {
