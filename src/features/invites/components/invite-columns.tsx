@@ -19,6 +19,7 @@ import { SortableTableHeader } from "@/features/common/components/sortable-table
 import { useToast } from "@/hooks/use-toast";
 import useDialogConfigStore from "@/stores/dialog-store";
 
+import { useAcceptInvite } from "../apis/use-accept-invite";
 import { useDeclineInvite } from "../apis/use-decline-invite";
 import { useDeleteInvite } from "../apis/use-delete-invite";
 import { TInvite } from "../invite-schemas";
@@ -66,6 +67,7 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
       const session = useSession();
 
       const { setDialogConfig } = useDialogConfigStore();
+      const acceptInvite = useAcceptInvite(session.data?.user.email);
       const declineInvite = useDeclineInvite(session.data?.user.email);
       const deleteInvite = useDeleteInvite(session.data?.user.email);
       const { toast } = useToast();
@@ -124,6 +126,23 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
         });
       };
 
+      const onAcceptInvite = () =>
+        acceptInvite.mutate(invite.id, {
+          onSuccess: () => {
+            toast({
+              title: "Invite accepted.",
+            });
+            setDialogConfig(undefined);
+          },
+          onError: (error) => {
+            toast({
+              title: error.message,
+              variant: "destructive",
+            });
+            setDialogConfig(undefined);
+          },
+        });
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -134,21 +153,28 @@ export const inviteColumns: ColumnDef<TInvite>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4" />
-                <span>Accept</span>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={showDeclineInviteConfirmation}
-            >
-              <div className="flex items-center gap-2">
-                <X className="h-4 w-4" />
-                <span>Decline</span>
-              </div>
-            </DropdownMenuItem>
+            {invite.email === session.data?.user.email && (
+              <>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={onAcceptInvite}
+                >
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4" />
+                    <span>Accept</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={showDeclineInviteConfirmation}
+                >
+                  <div className="flex items-center gap-2">
+                    <X className="h-4 w-4" />
+                    <span>Decline</span>
+                  </div>
+                </DropdownMenuItem>
+              </>
+            )}
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={showDeleteSprintConfirmation}
