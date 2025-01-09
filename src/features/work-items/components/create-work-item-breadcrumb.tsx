@@ -26,7 +26,7 @@ export const CreateWorkItemBreadcrumb = ({
     sprintId: string;
   }>();
   const project = useProjectDetails(projectId);
-  const sprint = useSprintDetails(projectId, sprintId);
+  const sprint = useSprintDetails(projectId, sprintId, "ALL");
 
   return (
     <Breadcrumb>

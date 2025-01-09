@@ -1,21 +1,32 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/features/common/components/spinner";
 import { useProjectWorkItemDetails } from "@/features/projects/apis/use-project-work-item-details";
 
+import { TWorkItemKeyMap } from "../work-item-schemas";
 import { CreateWorkItemBreadcrumb } from "./create-work-item-breadcrumb";
 import { WorkItemForm } from "./work-item-form";
 import { WorkItemsList } from "./work-items-list";
+
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
 
 export const WorkItemDetails = () => {
   const { projectId, workItemId } = useParams<{
     projectId: string;
     workItemId: string;
   }>();
-  const workItem = useProjectWorkItemDetails({ projectId, workItemId });
+  const [filterType, setFilterType] = useState<WorkItemTypeKeys>("ALL");
+  const workItem = useProjectWorkItemDetails({
+    projectId,
+    workItemId,
+    filterType,
+  });
+
+  const onFilterType = (type: TWorkItemKeyMap) => setFilterType(type);
 
   if (workItem.isLoading) {
     return <Spinner />;
@@ -33,10 +44,12 @@ export const WorkItemDetails = () => {
         </CardContent>
       </Card>
 
-      {workItem.data?.childWorkItems &&
-        workItem.data.childWorkItems.length > 0 && (
-          <WorkItemsList data={workItem.data?.childWorkItems} />
-        )}
+      {workItem.data?.type === "STORY" && (
+        <WorkItemsList
+          data={workItem.data?.childWorkItems || []}
+          onFilterType={onFilterType}
+        />
+      )}
     </div>
   );
 };

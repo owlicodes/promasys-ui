@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 import { format } from "date-fns";
 
@@ -9,18 +10,24 @@ import { Spinner } from "@/features/common/components/spinner";
 import { useProjectDetails } from "@/features/projects/apis/use-project-details";
 import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 import { WorkItemsList } from "@/features/work-items/components/work-items-list";
+import { TWorkItemKeyMap } from "@/features/work-items/work-item-schemas";
 
 import { useSprintDetails } from "../apis/use-sprint-details";
 import { SPRINT_STATUS_MAP } from "../utils";
 import { SprintDetailsBreadcrumb } from "./sprint-details-breadcrumb";
+
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
 
 export const SprintDetails = () => {
   const { projectId, sprintId } = useParams<{
     projectId: string;
     sprintId: string;
   }>();
+  const [filterType, setFilterType] = useState<WorkItemTypeKeys>("ALL");
   const project = useProjectDetails(projectId);
-  const sprint = useSprintDetails(projectId, sprintId);
+  const sprint = useSprintDetails(projectId, sprintId, filterType);
+
+  const onFilterType = (type: TWorkItemKeyMap) => setFilterType(type);
 
   if (project.isLoading || sprint.isLoading) {
     return <Spinner />;
@@ -68,7 +75,10 @@ export const SprintDetails = () => {
         <CreateNewWorkItem />
       </div>
 
-      <WorkItemsList data={sprint.data.workItems || []} />
+      <WorkItemsList
+        data={sprint.data.workItems || []}
+        onFilterType={onFilterType}
+      />
     </div>
   );
 };

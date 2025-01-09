@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 import { format } from "date-fns";
 
@@ -9,17 +10,23 @@ import { CreateNewSprintButton } from "@/features/sprints/components/create-new-
 import { SprintsList } from "@/features/sprints/components/sprints-list";
 import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 import { WorkItemsList } from "@/features/work-items/components/work-items-list";
+import { TWorkItemKeyMap } from "@/features/work-items/work-item-schemas";
 
 import { useProjectDetails } from "../apis/use-project-details";
 import { useProjectSprints } from "../apis/use-project-sprints";
 import { useProjectWorkItems } from "../apis/use-project-work-items";
 import { ProjectDetailsBreadcrumb } from "./project-details-breadcrumb";
 
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
+
 export const ProjectDetails = () => {
   const { projectId } = useParams<{ projectId: string }>();
+  const [filterTypeVal, setFilterTypeVal] = useState<WorkItemTypeKeys>("ALL");
   const project = useProjectDetails(projectId);
   const sprints = useProjectSprints(projectId);
-  const workItems = useProjectWorkItems(projectId);
+  const workItems = useProjectWorkItems(projectId, filterTypeVal);
+
+  const onFilterType = (type: TWorkItemKeyMap) => setFilterTypeVal(type);
 
   if (project.isLoading) {
     return <Spinner />;
@@ -63,7 +70,7 @@ export const ProjectDetails = () => {
 
       <SprintsList data={sprints.data || []} />
 
-      <WorkItemsList data={workItems.data || []} />
+      <WorkItemsList data={workItems.data || []} onFilterType={onFilterType} />
     </div>
   );
 };

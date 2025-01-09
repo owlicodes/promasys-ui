@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 import { TSprint } from "../sprints/sprint-schema";
+import { WORK_ITEM_TYPES_MAP } from "./utils";
+
+export type TWorkItemKeyMap = keyof typeof WORK_ITEM_TYPES_MAP;
 
 export type TWorkItem = {
   id: string;

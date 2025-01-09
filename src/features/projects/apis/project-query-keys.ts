@@ -1,3 +1,5 @@
+import { TWorkItemKeyMap } from "@/features/work-items/work-item-schemas";
+
 export const projectQueryKeys = {
   root: ["projects"],
   byProjectId: (projectId: string) => [...projectQueryKeys.root, projectId],
@@ -13,8 +15,9 @@ export const projectQueryKeys = {
   ],
   projectSprintById: (
     projectId: string | undefined,
-    sprintId: string | null | undefined
-  ) => [...projectQueryKeys.root, projectId, "sprints", sprintId],
+    sprintId: string | null | undefined,
+    filterType: TWorkItemKeyMap | "ALL"
+  ) => [...projectQueryKeys.root, projectId, "sprints", sprintId, filterType],
   projectUsers: (projectId: string | undefined) => [
     ...projectQueryKeys.root,
     projectId,
@@ -25,11 +28,10 @@ export const projectQueryKeys = {
     projectId,
     "stories",
   ],
-  workItemsByProjectId: (projectId: string | undefined) => [
-    ...projectQueryKeys.root,
-    projectId,
-    "work-items",
-  ],
+  workItemsByProjectId: (
+    projectId: string | undefined,
+    filterType: TWorkItemKeyMap | "ALL"
+  ) => [...projectQueryKeys.root, projectId, "work-items", filterType],
   backlogsByProjectId: (projectId: string | undefined) => [
     ...projectQueryKeys.root,
     projectId,
@@ -39,8 +41,16 @@ export const projectQueryKeys = {
   workItemDetailsByProjectIdAndWorkItemId: ({
     projectId,
     workItemId,
+    filterType,
   }: {
     projectId: string | undefined;
     workItemId: string | undefined;
-  }) => [...projectQueryKeys.root, projectId, "work-items", workItemId],
+    filterType: TWorkItemKeyMap | "ALL";
+  }) => [
+    ...projectQueryKeys.root,
+    projectId,
+    "work-items",
+    workItemId,
+    filterType,
+  ],
 };
