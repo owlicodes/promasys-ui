@@ -3,9 +3,11 @@
 import { useParams, useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Brain, Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -32,6 +34,7 @@ import useDialogConfigStore from "@/stores/dialog-store";
 import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useCreateWorkItem } from "../apis/use-create-work-item";
+import { useSuggestWorkItems } from "../apis/use-suggest-work-items";
 import { useUpdateWorkItem } from "../apis/use-update-work-item";
 import {
   TWorkItem,
@@ -73,6 +76,7 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
     filterType,
     data?.id
   );
+  const suggestWorkItems = useSuggestWorkItems();
   const { selectedOrganization } = useSelectedOrganizationStore();
   const type = form.watch("type");
 
@@ -88,6 +92,24 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
     toast({
       title: message,
     });
+  };
+
+  const onSuggestWorkItems = () => {
+    if (!form.getValues("title") || form.getValues("type") !== "STORY") {
+      toast({
+        title: "Work item should have a title and must be a story.",
+        variant: "destructive",
+      });
+    } else {
+      suggestWorkItems.mutate(form.getValues("title"), {
+        onSuccess: (data) => form.setValue("description", data),
+        onError: (error) =>
+          toast({
+            title: error.message,
+            variant: "destructive",
+          }),
+      });
+    }
   };
 
   const onSubmit = (values: TWorkItemFormSchema) => {
@@ -173,6 +195,16 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
             </FormItem>
           )}
         />
+        {!suggestWorkItems.isPending ? (
+          <Button type="button" onClick={onSuggestWorkItems}>
+            <Brain />
+            Suggest Work Items
+          </Button>
+        ) : (
+          <Button type="button" disabled>
+            <Loader className="h-4 w-4 animate-spin" /> <span>Thinking...</span>
+          </Button>
+        )}
         <FormField
           control={form.control}
           name="sprintId"
