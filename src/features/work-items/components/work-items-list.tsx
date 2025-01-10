@@ -6,11 +6,16 @@ import { FilterWorkItemStatusSelect } from "./filter-work-items-status-select";
 import { workItemColumns } from "./work-item-columns";
 
 type WorkItemsListProps = {
+  defaultFilterValue?: TWorkItemKeyMap | "ALL" | undefined;
   data: TWorkItem[];
   onFilterType?: (type: TWorkItemKeyMap) => void;
 };
 
-export const WorkItemsList = ({ data, onFilterType }: WorkItemsListProps) => {
+export const WorkItemsList = ({
+  defaultFilterValue,
+  data,
+  onFilterType,
+}: WorkItemsListProps) => {
   return (
     <Card>
       <CardHeader>
@@ -18,7 +23,10 @@ export const WorkItemsList = ({ data, onFilterType }: WorkItemsListProps) => {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex w-full justify-end">
-          <FilterWorkItemStatusSelect onFilterType={onFilterType} />
+          <FilterWorkItemStatusSelect
+            onFilterType={onFilterType}
+            defaultValue={defaultFilterValue}
+          />
         </div>
         <DataTable columns={workItemColumns} data={data} />
       </CardContent>

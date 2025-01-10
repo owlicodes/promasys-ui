@@ -1,32 +1,40 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/features/common/components/spinner";
 import { useProjectWorkItemDetails } from "@/features/projects/apis/use-project-work-item-details";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { TWorkItemKeyMap } from "../work-item-schemas";
 import { CreateWorkItemBreadcrumb } from "./create-work-item-breadcrumb";
 import { WorkItemForm } from "./work-item-form";
 import { WorkItemsList } from "./work-items-list";
 
-type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL" | undefined;
 
 export const WorkItemDetails = () => {
-  const { projectId, workItemId } = useParams<{
+  const { projectId, sprintId, workItemId } = useParams<{
     projectId: string;
+    sprintId: string;
     workItemId: string;
   }>();
-  const [filterType, setFilterType] = useState<WorkItemTypeKeys>("ALL");
+  const { selectedOrganization } = useSelectedOrganizationStore();
+  const searchParams = useSearchParams();
+  const filterType = searchParams.get("type") as WorkItemTypeKeys;
   const workItem = useProjectWorkItemDetails({
     projectId,
     workItemId,
-    filterType,
+    filterType: filterType || "ALL",
   });
+  const router = useRouter();
 
-  const onFilterType = (type: TWorkItemKeyMap) => setFilterType(type);
+  const onFilterType = (type: TWorkItemKeyMap) => {
+    router.push(
+      `/${selectedOrganization?.name}/${projectId}/${sprintId}/work-items/${workItemId}?type=${type}`
+    );
+  };
 
   if (workItem.isLoading) {
     return <Spinner />;
@@ -48,6 +56,7 @@ export const WorkItemDetails = () => {
         <WorkItemsList
           data={workItem.data?.childWorkItems || []}
           onFilterType={onFilterType}
+          defaultFilterValue={filterType}
         />
       )}
     </div>

@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { projectQueryKeys } from "@/features/projects/apis/project-query-keys";
 import { api } from "@/lib/api-client";
 
 import { TWorkItem } from "../work-item-schemas";
@@ -19,23 +18,14 @@ const deleteWorkItem = ({
       throw error.response.data;
     });
 
-export const useDeleteWorkItem = (
-  projectId: string | undefined,
-  sprintId: string | null | undefined
-) => {
+export const useDeleteWorkItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteWorkItem,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: projectQueryKeys.workItemsByProjectId(projectId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: projectQueryKeys.backlogsByProjectId(projectId),
+        predicate: (query) => query.queryKey.includes("projects"),
       });
     },
     onError: (error: { message: string }) => error,

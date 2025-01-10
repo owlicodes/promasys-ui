@@ -1,7 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { format } from "date-fns";
 
@@ -11,23 +10,31 @@ import { useProjectDetails } from "@/features/projects/apis/use-project-details"
 import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 import { WorkItemsList } from "@/features/work-items/components/work-items-list";
 import { TWorkItemKeyMap } from "@/features/work-items/work-item-schemas";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useSprintDetails } from "../apis/use-sprint-details";
 import { SPRINT_STATUS_MAP } from "../utils";
 import { SprintDetailsBreadcrumb } from "./sprint-details-breadcrumb";
 
-type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL" | undefined;
 
 export const SprintDetails = () => {
   const { projectId, sprintId } = useParams<{
     projectId: string;
     sprintId: string;
   }>();
-  const [filterType, setFilterType] = useState<WorkItemTypeKeys>("ALL");
+  const { selectedOrganization } = useSelectedOrganizationStore();
+  const searchParams = useSearchParams();
+  const filterType = searchParams.get("type") as WorkItemTypeKeys;
   const project = useProjectDetails(projectId);
-  const sprint = useSprintDetails(projectId, sprintId, filterType);
+  const sprint = useSprintDetails(projectId, sprintId, filterType || "ALL");
+  const router = useRouter();
 
-  const onFilterType = (type: TWorkItemKeyMap) => setFilterType(type);
+  const onFilterType = (type: TWorkItemKeyMap) => {
+    router.push(
+      `/${selectedOrganization?.name}/${projectId}/${sprintId}?type=${type}`
+    );
+  };
 
   if (project.isLoading || sprint.isLoading) {
     return <Spinner />;
@@ -78,6 +85,7 @@ export const SprintDetails = () => {
       <WorkItemsList
         data={sprint.data.workItems || []}
         onFilterType={onFilterType}
+        defaultFilterValue={filterType}
       />
     </div>
   );

@@ -11,13 +11,17 @@ import {
 import { WORK_ITEM_TYPES_MAP } from "../utils";
 import { TWorkItemKeyMap } from "../work-item-schemas";
 
-export const FilterWorkItemStatusSelect = ({
-  onFilterType,
-}: {
+type FilterWorkItemStatusSelectProps = {
+  defaultValue?: TWorkItemKeyMap | "ALL" | undefined;
   onFilterType?: (type: TWorkItemKeyMap) => void;
-}) => {
+};
+
+export const FilterWorkItemStatusSelect = ({
+  defaultValue,
+  onFilterType,
+}: FilterWorkItemStatusSelectProps) => {
   return (
-    <Select onValueChange={onFilterType}>
+    <Select onValueChange={onFilterType} defaultValue={defaultValue || ""}>
       <SelectTrigger className="w-[200px]">
         <SelectValue placeholder="Filter by type" />
       </SelectTrigger>

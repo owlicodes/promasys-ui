@@ -1,7 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { format } from "date-fns";
 
@@ -11,22 +10,28 @@ import { SprintsList } from "@/features/sprints/components/sprints-list";
 import { CreateNewWorkItem } from "@/features/work-items/components/create-new-work-item";
 import { WorkItemsList } from "@/features/work-items/components/work-items-list";
 import { TWorkItemKeyMap } from "@/features/work-items/work-item-schemas";
+import useSelectedOrganizationStore from "@/stores/selected-organization-store";
 
 import { useProjectDetails } from "../apis/use-project-details";
 import { useProjectSprints } from "../apis/use-project-sprints";
 import { useProjectWorkItems } from "../apis/use-project-work-items";
 import { ProjectDetailsBreadcrumb } from "./project-details-breadcrumb";
 
-type WorkItemTypeKeys = TWorkItemKeyMap | "ALL";
+type WorkItemTypeKeys = TWorkItemKeyMap | "ALL" | undefined;
 
 export const ProjectDetails = () => {
   const { projectId } = useParams<{ projectId: string }>();
-  const [filterTypeVal, setFilterTypeVal] = useState<WorkItemTypeKeys>("ALL");
+  const { selectedOrganization } = useSelectedOrganizationStore();
+  const searchParams = useSearchParams();
+  const filterType = searchParams.get("type") as WorkItemTypeKeys;
   const project = useProjectDetails(projectId);
   const sprints = useProjectSprints(projectId);
-  const workItems = useProjectWorkItems(projectId, filterTypeVal);
+  const workItems = useProjectWorkItems(projectId, filterType || "ALL");
+  const router = useRouter();
 
-  const onFilterType = (type: TWorkItemKeyMap) => setFilterTypeVal(type);
+  const onFilterType = (type: TWorkItemKeyMap) => {
+    router.push(`/${selectedOrganization?.name}/${projectId}?type=${type}`);
+  };
 
   if (project.isLoading) {
     return <Spinner />;
@@ -70,7 +75,11 @@ export const ProjectDetails = () => {
 
       <SprintsList data={sprints.data || []} />
 
-      <WorkItemsList data={workItems.data || []} onFilterType={onFilterType} />
+      <WorkItemsList
+        data={workItems.data || []}
+        onFilterType={onFilterType}
+        defaultFilterValue={filterType}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
@@ -36,6 +36,7 @@ import { useUpdateWorkItem } from "../apis/use-update-work-item";
 import {
   TWorkItem,
   TWorkItemFormSchema,
+  TWorkItemKeyMap,
   workItemFormSchema,
 } from "../work-item-schemas";
 
@@ -59,12 +60,19 @@ export const WorkItemForm = ({ data }: { data?: TWorkItem }) => {
   });
   const session = useSession();
   const { setDialogConfig } = useDialogConfigStore();
+  const searchParams = useSearchParams();
+  const filterType = (searchParams.get("type") as TWorkItemKeyMap) || "ALL";
   const { toast } = useToast();
   const projectUsers = useProjectUsers(projectId);
   const projectStories = useProjectStories(projectId);
   const projectSprints = useProjectSprints(projectId);
   const createWorkItem = useCreateWorkItem();
-  const updateWorkItem = useUpdateWorkItem(projectId, sprintId);
+  const updateWorkItem = useUpdateWorkItem(
+    projectId,
+    sprintId,
+    filterType,
+    data?.id
+  );
   const { selectedOrganization } = useSelectedOrganizationStore();
   const type = form.watch("type");
 

@@ -3,7 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { projectQueryKeys } from "@/features/projects/apis/project-query-keys";
 import { api } from "@/lib/api-client";
 
-import { TUpdateWorkItem, TWorkItem } from "../work-item-schemas";
+import {
+  TUpdateWorkItem,
+  TWorkItem,
+  TWorkItemKeyMap,
+} from "../work-item-schemas";
 
 const updateWorkItem = ({
   data,
@@ -21,7 +25,9 @@ const updateWorkItem = ({
 
 export const useUpdateWorkItem = (
   projectId: string | undefined,
-  sprintId: string | undefined
+  sprintId: string | undefined,
+  filterType: TWorkItemKeyMap | "ALL",
+  workItemId: string | undefined
 ) => {
   const queryClient = useQueryClient();
 
@@ -29,13 +35,24 @@ export const useUpdateWorkItem = (
     mutationFn: updateWorkItem,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: projectQueryKeys.workItemsByProjectId(projectId),
+        queryKey: projectQueryKeys.workItemsByProjectId(projectId, filterType),
       });
       queryClient.invalidateQueries({
-        queryKey: projectQueryKeys.projectSprintById(projectId, sprintId),
+        queryKey: projectQueryKeys.projectSprintById(
+          projectId,
+          sprintId,
+          filterType
+        ),
       });
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.backlogsByProjectId(projectId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.workItemDetailsByProjectIdAndWorkItemId({
+          projectId,
+          workItemId,
+          filterType,
+        }),
       });
     },
     onError: (error: { message: string }) => error,
